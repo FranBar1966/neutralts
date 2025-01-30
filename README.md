@@ -1,4 +1,4 @@
-Neutral Web Template System
+Neutral Web Template Engine
 ===========================
 
 Neutral is a **web application template system**, designed to work with **any programming language** (language-agnostic) via IPC and natively as library/crate in Rust.
