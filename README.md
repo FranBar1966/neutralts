@@ -15,17 +15,6 @@ Safe
 
 Neutral is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates.
 
-Which is not
-------------
-
-It is not a programming language, but a markup language, it does not modify data, only its representation.
-
-It is NOT possible:
-
-* Logical operator: varname == varname
-* Mathematical operators: varname + varname
-* Assignment operators: varname = 1
-
 Features
 --------
 
@@ -35,6 +24,7 @@ It allows you to create templates compatible with any system and any programming
 * Language-agnostic
 * Modular
 * Parameterizable
+* Efficient
 * Parse files
 * Embed files
 * Localization
@@ -60,6 +50,7 @@ Similarly, Neutral TS has an IPC server, and each programming language has a cli
 
 Thanks to this, and to its modular and parameterizable design, it is possible to create utilities or plugins that will work everywhere. For example, you can develop tools to create forms or form fields and create your own libraries of "snippets" for repetitive tasks.
 
+A small example of a plugin: [countries form field](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/countries-form-field) and another one more practical: [plugin build-form](https://gitlab.com/neutralfw/neutralts/-/tree/master/plugins/build-form)
 
 Localization
 ------------
@@ -370,4 +361,3 @@ Python
 ------
 - [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
 - [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/python)
-
