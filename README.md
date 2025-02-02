@@ -362,5 +362,7 @@ Python
 - [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
 - [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/python)
 
+------
 
+[Download](https://crates.io/api/v1/crates/neutralts/1.0.0/download)
 
