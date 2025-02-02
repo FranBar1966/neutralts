@@ -362,6 +362,5 @@ Python
 - [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
 - [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/python)
 
------
-[Neutral TS](https://www.reddit.com/r/NeutralTS/)
+
 
