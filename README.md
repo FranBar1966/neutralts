@@ -364,5 +364,5 @@ Python
 
 ------
 
-[Download](https://crates.io/api/v1/crates/neutralts/1.0.0/download)
+[Download](https://crates.io/api/v1/crates/neutralts/1.0.1/download)
 
