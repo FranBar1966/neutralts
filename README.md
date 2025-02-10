@@ -3,12 +3,12 @@ Rust Web Template Engine - Neutral TS
 
 Neutral is a **web application template system**, designed to work with **any programming language** (language-agnostic) via IPC and natively as library/crate in Rust.
 
-In the examples, we use exactly the same template for both Rust and PHP:
+In this simple PWA example, all three use exactly the same templates.
 
-- [Rust example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/actix)
-- [PHP example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
-- [Template](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/www)
-
+- [Rust PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/src)
+- [Python PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
+- [PHP PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php)
+- [Template](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/neutral)
 
 Safe
 ----
@@ -255,77 +255,34 @@ Template example
 </html>
 ```
 
-Native use (Rust)
------------------
+Usage
+-----
 
 You need two things, a template file and a json schema:
 
 ```plaintext
-
-let schema = json!({
-    "config": {
-        "comments": "remove"
-    },
+{
+    "config": {},
     "inherit": {
         "locale": {
             "current": "en",
-            "trans": {
-                "en": {
-                    "Hello nts": "Hello",
-                    "ref:greeting-nts": "Hello"
-                },
-                "es": {
-                    "Hello nts": "Hola",
-                    "ref:greeting-nts": "Hola"
-                },
-                "de": {
-                    "Hello nts": "Hallo",
-                    "ref:greeting-nts": "Hallo"
-                },
-                "fr": {
-                    "Hello nts": "Bonjour",
-                    "ref:greeting-nts": "Bonjour"
-                },
-                "el": {
-                    "Hello nts": "Γεια σας",
-                    "ref:greeting-nts": "Γεια σας"
-                }
-            }
+            "trans": {}
         }
     },
     "data": {
-        "web-site-name": "MySite",
-        "varname": "value",
-        "true": true,
-        "false": false,
-        "hello": "hello",
-        "zero": "0",
-        "one": "1",
-        "spaces": "  ",
-        "empty": "",
-        "null": null,
-        "emptyarr": [],
-        "array": {
-            "true": true,
-            "false": false,
-            "hello": "hello",
-            "zero": "0",
-            "one": "1",
-            "spaces": "  ",
-            "empty": "",
-            "null": null
-        }
+        "web_site_name": "MySite"
     }
-});
+}
 ```
 
 Template file.ntpl:
 
 ```text
-{:;web-site-name:}
+{:;web_site_name:}
 ```
 
-In Rust:
+Native use (Rust)
+-----------------
 
 ```text
 let template = Template::from_file_value("file.ntpl", schema).unwrap();
@@ -343,26 +300,69 @@ let status_param = template.get_status_param();
 // act accordingly at this point according to your framework
 ```
 
-Rust examples
--------------
+### Rust examples
 
+ - [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app)
  - [actix-web](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/actix)
  - [warp](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/warp)
  - [axum](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/actix)
  - [rocket](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/rocket)
  - [examples](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples)
 
-PHP
----
-- [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
-- [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/php)
-
 Python
 ------
+
+Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/neutralts), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/python)
+
+```text
+from NeutralIpcTemplate import NeutralIpcTemplate
+
+template = NeutralIpcTemplate("file.ntpl", schema)
+contents = template.render()
+
+# e.g.: 200
+status_code = template.get_status_code()
+
+# e.g.: OK
+status_text = template.get_status_text()
+
+# empty if no error
+status_param = template.get_status_param()
+
+# act accordingly at this point according to your framework
+```
+
+### Python examples
+
+- [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
 - [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
 - [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/python)
 
-------
+PHP
+---
 
-[Download](https://crates.io/api/v1/crates/neutralts/1.0.1/download)
+Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/neutralts), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/php)
 
+```text
+include 'NeutralIpcTemplate.php';
+
+$template = new NeutralIpcTemplate("file.ntpl", $schema);
+$contents = $template->render();
+
+// e.g.: 200
+$status_code = $template->get_status_code();
+
+// e.g.: OK
+$status_text = $template->get_status_text();
+
+// empty if no error
+$status_param = $template->get_status_param();
+
+// act accordingly at this point according to your framework
+```
+
+### PHP examples
+
+- [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php)
+- [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
+- [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/php)
