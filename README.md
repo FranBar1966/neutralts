@@ -10,10 +10,14 @@ In this simple PWA example, all three use exactly the same templates.
 - [PHP PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php)
 - [Template](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/neutral)
 
+(*) For non-Rust requires an IPC server that you can download from the [IPC repository](https://gitlab.com/neutralfw/ipc)
+
+The documentation of the templates is here: [template doc](https://docs.rs/neutralts/latest/neutralts/doc/index.html) and Rust documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
+
 Safe
 ----
 
-Neutral is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates.
+Neutral is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://docs.rs/neutralts/latest/neutralts/doc/index.html#safety).
 
 Features
 --------
@@ -25,6 +29,7 @@ It allows you to create templates compatible with any system and any programming
 * Modular
 * Parameterizable
 * Efficient
+* Template inheritance
 * Parse files
 * Embed files
 * Localization
@@ -42,7 +47,7 @@ Neutral TS offers two main ways to integrate with other programming languages:
 
 * In Rust: You can use Neutral TS as a library by downloading the crate.
 
-* In other programming languages: Inter-Process Communication (IPC) is necessary, similar to how databases like MariaDB work.
+* In other programming languages: Inter-Process Communication ([IPC](https://gitlab.com/neutralfw/ipc)) is necessary, similar to how databases like MariaDB work.
 
 Imagine a database. It has a server, and different programming languages access the data through a client. This means that if you run a "SELECT ..." query from any programming language, the result will always be the same.
 
@@ -91,7 +96,7 @@ Now you can use:
 {:trans; Hello :}
 ```
 
-Actually you can always use "trans" because if there is no translation it returns the text.
+Actually you can always use "trans" because if there is no translation it returns the text.  See: [locale](https://docs.rs/neutralts/latest/neutralts/doc/index.html#locale--) and [trans](https://docs.rs/neutralts/latest/neutralts/doc/index.html#trans--).
 
 Bif layout (Build-in function)
 ------------------------------
@@ -101,16 +106,16 @@ Bif layout (Build-in function)
     .-- open bif
     |    .-- bif name
     |    |   .-- name separator
-    |    |   |    .-- params
-    |    |   |    |    .-- params/code separatos
-    |    |   |    |    |    .-- code
-    |    |   |    |    |    |   .-- close bif
-    |    |   |    |    |    |   |
-    v    v   v    v    v    v   v
-    -- ----- - ------- -- ----- --
-    {:snippet; varname >>  ...  :}
+    |    |   |     .-- params
+    |    |   |     |    .-- params/code separatos
+    |    |   |     |    |    .-- code
+    |    |   |     |    |    |   .-- close bif
+    |    |   |     |    |    |   |
+    v    v   v     v    v    v   v
+    -- ----- - -------- -- ----- --
+    {:snippet; snipname >>  ...  :}
     ------------------------------
-            ^  ----------------
+            ^ -------------------
             |         ^
             |         |
             |         `-- source
@@ -118,7 +123,7 @@ Bif layout (Build-in function)
 
 ```
 
-Bif example:
+Bif example: (See: [syntax](https://docs.rs/neutralts/latest/neutralts/doc/index.html#syntax))
 
 ```neutral
 {:filled; varname >>
@@ -228,6 +233,8 @@ From then on you can invoke it like this:
 {:snippet; name :}
 ```
 
+See: [snippet](https://docs.rs/neutralts/latest/neutralts/doc/index.html#snippet--).
+
 Template example
 ----------------
 
@@ -312,7 +319,7 @@ let status_param = template.get_status_param();
 Python
 ------
 
-Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/neutralts), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/python)
+Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/ipc), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/python)
 
 ```text
 from NeutralIpcTemplate import NeutralIpcTemplate
@@ -336,12 +343,13 @@ status_param = template.get_status_param()
 
 - [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
 - [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
-- [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/python)
+- [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/python)
+- [IPC server](https://gitlab.com/neutralfw/ipc)
 
 PHP
 ---
 
-Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/neutralts), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/php)
+Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/ipc), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/php)
 
 ```text
 include 'NeutralIpcTemplate.php';
@@ -365,4 +373,7 @@ $status_param = $template->get_status_param();
 
 - [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php)
 - [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
-- [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/php)
+- [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/php)
+- [IPC server](https://gitlab.com/neutralfw/ipc)
+
+
