@@ -1,26 +1,48 @@
 Rust Web Template Engine - Neutral TS
 =====================================
 
-Neutral is a **web application template system**, designed to work with **any programming language** (language-agnostic) via IPC and natively as library/crate in Rust.
+Neutral is a **template engine** for the Web, designed to work with **any programming language** (language-agnostic) via IPC and natively as library/crate in Rust.
 
 In this simple PWA example, all three use exactly the same templates.
 
-- [Rust PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/src)
+- [Rust PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/rust)
 - [Python PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
 - [PHP PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php)
 - [Template](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/neutral)
 
 (*) For non-Rust requires an IPC server that you can download from the [IPC repository](https://gitlab.com/neutralfw/ipc)
 
-The documentation of the templates is here: [template doc](https://docs.rs/neutralts/latest/neutralts/doc/index.html) and Rust documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
+The documentation of the **web template** is here: [template doc](https://docs.rs/neutralts/latest/neutralts/doc/index.html) and **Rust** documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
+
+Rust
+----
+
+In Rust it is enough with two methods, create the template with a file and a schema and then render:
+
+```text
+// Create template
+let template = Template::from_file_value("file.ntpl", schema).unwrap();
+
+// Render template
+let content = template.render();
+```
 
 Safe
 ----
 
 Neutral is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://docs.rs/neutralts/latest/neutralts/doc/index.html#safety).
 
-Features
---------
+Which is not
+------------
+
+It is not a programming language, but a markup language, it does not modify data, only its representation. It is NOT possible:
+
+* Logical operator: varname >= varname
+* Mathematical operators: varname + varname
+* Assignment operators: varname = 1
+
+Template Engine - Features
+--------------------------
 
 It allows you to create templates compatible with any system and any programming language.
 
@@ -30,6 +52,7 @@ It allows you to create templates compatible with any system and any programming
 * Parameterizable
 * Efficient
 * Template inheritance
+* Cache modular and !cache
 * Parse files
 * Embed files
 * Localization
@@ -235,8 +258,52 @@ From then on you can invoke it like this:
 
 See: [snippet](https://docs.rs/neutralts/latest/neutralts/doc/index.html#snippet--).
 
-Template example
-----------------
+Cache
+-----
+
+The cache is modular, allowing only parts of the template to be included in the cache:
+
+```plaintext
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cache</title>
+    </head>
+    <body>
+
+        {:cache; /120/ >>
+            <div>{:code; ... :}</div>
+        :}
+
+        <div>{:date; %H:%M:%S :}</div>
+
+        {:cache; /120/ >>
+            <div>{:code; ... :}</div>
+        :}
+
+    </body>
+</html>
+```
+Or exclude parts of the cache, the previous example would be much better like this:
+
+```plaintext
+{:cache; /120/ >>
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Cache</title>
+        </head>
+        <body>
+            {:!cache;
+                {:date; %H:%M:%S :}
+            :}
+        </body>
+    </html>
+:}
+```
+
+Web template - example
+----------------------
 
 ```html
 {:*
@@ -269,15 +336,59 @@ You need two things, a template file and a json schema:
 
 ```plaintext
 {
-    "config": {},
+    "config": {
+        "comments": "remove",
+        "cache_prefix": "neutral-cache",
+        "cache_dir": "",
+        "cache_on_post": false,
+        "cache_on_get": true,
+        "cache_on_cookies": true,
+        "cache_disable": false,
+        "filter_all": false
+    },
     "inherit": {
         "locale": {
             "current": "en",
-            "trans": {}
+            "trans": {
+                "en": {
+                    "Hello nts": "Hello",
+                    "ref:greeting-nts": "Hello"
+                },
+                "es": {
+                    "Hello nts": "Hola",
+                    "ref:greeting-nts": "Hola"
+                },
+                "de": {
+                    "Hello nts": "Hallo",
+                    "ref:greeting-nts": "Hallo"
+                },
+                "fr": {
+                    "Hello nts": "Bonjour",
+                    "ref:greeting-nts": "Bonjour"
+                },
+                "el": {
+                    "Hello nts": "Γεια σας",
+                    "ref:greeting-nts": "Γεια σας"
+                }
+            }
         }
     },
     "data": {
-        "web_site_name": "MySite"
+        "CONTEXT": {
+            "ROUTE": "",
+            "HOST": "",
+            "GET": {},
+            "POST": {},
+            "SERVER": {},
+            "FILES": {},
+            "COOKIES": {},
+            "SESSION": {},
+            "ENV": {}
+        },
+        "web_site_name": "MySite",
+        "web_site": {
+            "name": "MySite",
+        }
     }
 }
 ```
@@ -286,6 +397,12 @@ Template file.ntpl:
 
 ```text
 {:;web_site_name:}
+```
+
+Or for array:
+
+```text
+{:;web_site->name:}
 ```
 
 Native use (Rust)
@@ -309,7 +426,7 @@ let status_param = template.get_status_param();
 
 ### Rust examples
 
- - [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app)
+ - [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/rust)
  - [actix-web](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/actix)
  - [warp](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/warp)
  - [axum](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/actix)
@@ -375,5 +492,3 @@ $status_param = $template->get_status_param();
 - [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
 - [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/php)
 - [IPC server](https://gitlab.com/neutralfw/ipc)
-
-
