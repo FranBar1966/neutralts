@@ -492,3 +492,16 @@ $status_param = $template->get_status_param();
 - [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
 - [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/php)
 - [IPC server](https://gitlab.com/neutralfw/ipc)
+
+Links
+-----
+
+Neutral TS template engine.
+
+- [Rust docs](https://docs.rs/neutralts/latest/neutralts/)
+- [Template docs](https://docs.rs/neutralts/latest/neutralts/doc/index.html)
+- [IPC server and clients](https://gitlab.com/neutralfw/ipc)
+- [Repository](https://gitlab.com/neutralfw/neutralts)
+- [Crate](https://crates.io/crates/neutralts)
+- [Example Web App](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app)
+- [Examples](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples)
