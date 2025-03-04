@@ -12,7 +12,7 @@ In this simple PWA example, all three use exactly the same templates.
 
 (*) For non-Rust requires an IPC server that you can download from the [IPC repository](https://gitlab.com/neutralfw/ipc)
 
-The documentation of the **web template** is here: [template doc](https://docs.rs/neutralts/latest/neutralts/doc/index.html) and **Rust** documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
+The documentation of the **web template** engine is here: [template engine doc](https://docs.rs/neutralts/latest/neutralts/doc/index.html) and **Rust** documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
 
 Rust
 ----
@@ -20,7 +20,18 @@ Rust
 In Rust it is enough with two methods, create the template with a file and a schema and then render:
 
 ```text
+// Data
+let schema = json!({
+    "data": {
+        "hello": "Hello, World!",
+        "site": {
+            "name": "My Site"
+        }
+    }
+});
+
 // Create template
+// In file.ntpl use {:;hello:} and {:;site->name:} for show data.
 let template = Template::from_file_value("file.ntpl", schema).unwrap();
 
 // Render template
@@ -30,16 +41,7 @@ let content = template.render();
 Safe
 ----
 
-Neutral is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://docs.rs/neutralts/latest/neutralts/doc/index.html#safety).
-
-Which is not
-------------
-
-It is not a programming language, but a markup language, it does not modify data, only its representation. It is NOT possible:
-
-* Logical operator: varname >= varname
-* Mathematical operators: varname + varname
-* Assignment operators: varname = 1
+Neutral TS template engine is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://docs.rs/neutralts/latest/neutralts/doc/index.html#safety).
 
 Template Engine - Features
 --------------------------
@@ -53,6 +55,7 @@ It allows you to create templates compatible with any system and any programming
 * Efficient
 * Template inheritance
 * Cache modular and !cache
+* JS fetch
 * Parse files
 * Embed files
 * Localization
@@ -66,9 +69,9 @@ It allows you to create templates compatible with any system and any programming
 How it works
 ------------
 
-Neutral TS offers two main ways to integrate with other programming languages:
+Neutral TS template engine offers two main ways to integrate with other programming languages:
 
-* In Rust: You can use Neutral TS as a library by downloading the crate.
+* In Rust: You can use Neutral TS template engine as a library by downloading the crate.
 
 * In other programming languages: Inter-Process Communication ([IPC](https://gitlab.com/neutralfw/ipc)) is necessary, similar to how databases like MariaDB work.
 
@@ -83,7 +86,7 @@ A small example of a plugin: [countries form field](https://gitlab.com/neutralfw
 Localization
 ------------
 
-Neutral provides powerful and easy-to-use translation utilities... define the translation in a JSON:
+Neutral TS template engine provides powerful and easy-to-use translation utilities... define the translation in a JSON:
 
 ```json
 "locale": {
@@ -154,7 +157,7 @@ Bif example: (See: [syntax](https://docs.rs/neutralts/latest/neutralts/doc/index
 :}
 ```
 
-Neutral is based on Bifs with block structure, we call the set of nested Bifs of the same level a block:
+Neutral TS template engine is based on Bifs with block structure, we call the set of nested Bifs of the same level a block:
 
 ```neutral
 
@@ -267,20 +270,16 @@ The cache is modular, allowing only parts of the template to be included in the 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Cache</title>
+        <title>Template engine cache</title>
     </head>
     <body>
-
         {:cache; /120/ >>
             <div>{:code; ... :}</div>
         :}
-
         <div>{:date; %H:%M:%S :}</div>
-
         {:cache; /120/ >>
             <div>{:code; ... :}</div>
         :}
-
     </body>
 </html>
 ```
@@ -291,16 +290,38 @@ Or exclude parts of the cache, the previous example would be much better like th
     <!DOCTYPE html>
     <html>
         <head>
-            <title>Cache</title>
+            <title>Template engine cache</title>
         </head>
         <body>
+            <div>{:code; ... :}</div>
             {:!cache;
                 {:date; %H:%M:%S :}
             :}
+            <div>{:code; ... :}</div>
         </body>
     </html>
 :}
 ```
+
+Fetch
+-----
+
+Neutral TS template engine provides a basic JavaScript to perform simple `fetch` requests:
+
+```plaintext
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Template engine</title>
+    </head>
+    <body>
+        {:fetch; "/form-login" >>
+            <div>Loading...</div>
+        :}
+    </body>
+</html>
+```
+See: [fetch](https://docs.rs/neutralts/latest/neutralts/doc/index.html#fetch--).
 
 Web template - example
 ----------------------
@@ -344,7 +365,8 @@ You need two things, a template file and a json schema:
         "cache_on_get": true,
         "cache_on_cookies": true,
         "cache_disable": false,
-        "filter_all": false
+        "filter_all": false,
+        "disable_js": false
     },
     "inherit": {
         "locale": {
@@ -379,14 +401,14 @@ You need two things, a template file and a json schema:
             "HOST": "",
             "GET": {},
             "POST": {},
-            "SERVER": {},
+            "HEADERS": {},
             "FILES": {},
             "COOKIES": {},
             "SESSION": {},
             "ENV": {}
         },
-        "web_site_name": "MySite",
-        "web_site": {
+        "site_name": "MySite",
+        "site": {
             "name": "MySite",
         }
     }
@@ -396,13 +418,13 @@ You need two things, a template file and a json schema:
 Template file.ntpl:
 
 ```text
-{:;web_site_name:}
+{:;site_name:}
 ```
 
 Or for array:
 
 ```text
-{:;web_site->name:}
+{:;site->name:}
 ```
 
 Native use (Rust)
