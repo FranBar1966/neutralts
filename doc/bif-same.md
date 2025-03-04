@@ -1,5 +1,5 @@
 {:same; ... :}
-====================================
+==============
 
 Output code if same.
 
@@ -11,10 +11,10 @@ Output code if same.
 Any delimiter can be used:
 
 ```html
-{:replace; ~a~b~ >> ... :}
-{:replace; #a#b# >> ... :}
-{:replace; |a|b| >> ... :}
-{:replace; XaXbX >> ... :}
+{:same; ~a~b~ >> ... :}
+{:same; #a#b# >> ... :}
+{:same; |a|b| >> ... :}
+{:same; XaXbX >> ... :}
 ...
 ```
 

@@ -77,7 +77,7 @@ Manage in the app (native Rust)
 
 If you use the bif “exit” or “redirect” it is necessary to manage the status codes in the application, it will depend on the environment or framework you are using, it could be something like this:
 
-```textplain
+```text
 let template = Template::from_file_value("file.ntpl", schema).unwrap();
 let content = template.render();
 

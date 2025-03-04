@@ -1,5 +1,5 @@
-scope
-=====
+Scope and inheritance
+=====================
 
 By default the scope of the definitions is block inheritable to the children of the block:
 

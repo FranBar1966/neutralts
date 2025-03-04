@@ -68,7 +68,7 @@ Usage
 
 The following are the same:
 
-```textplain
+```text
 <div>{:;:}</div>
 <div>{:; :}</div>
 <div>{:;     :}</div>
@@ -79,7 +79,7 @@ The following are the same:
 
 Output:
 
-```textplain
+```text
 <div></div>
 <div></div>
 <div></div>
@@ -88,7 +88,7 @@ Output:
 
 The usual behavior in output is as expected in practically all cases, the following produce the same output:
 
-```textplain
+```text
 <div>{:code;Hello:}</div>
 <div>{:code; Hello :}</div>
 <div>{:code;
@@ -100,7 +100,7 @@ The usual behavior in output is as expected in practically all cases, the follow
 
 Output:
 
-```textplain
+```text
 <div>Hello</div>
 <div>Hello</div>
 <div>Hello</div>
@@ -108,7 +108,7 @@ Output:
 
 But in special cases we may need to make it so that spaces or carriage returns are not removed. And this is the main use of unprintable Bif:
 
-```textplain
+```text
 <pre>
 {:code;
     {:^;:}
@@ -120,7 +120,7 @@ But in special cases we may need to make it so that spaces or carriage returns a
 
 Output:
 
-```textplain
+```text
 <pre>
     Hello
 </pre>
@@ -128,7 +128,7 @@ Output:
 
 Preserve space:
 
-```textplain
+```text
 <div>{:code;   Hello   :}</div>
 <div>{:code; {:;:} Hello :}</div>
 <div> {:code; Hello :}</div>
@@ -136,7 +136,7 @@ Preserve space:
 
 Output:
 
-```textplain
+```text
 <div>Hello</div>
 <div> Hello</div>
 <div> Hello</div>
@@ -145,7 +145,7 @@ Output:
 
 In the previous example:
 
-```textplain
+```text
                   .--- preserve
                   |
                   v
@@ -160,7 +160,7 @@ In the previous example:
 
 Not preserve spaces:
 
-```textplain
+```text
 <div>
     {:code;
         Hello
@@ -175,7 +175,7 @@ Not preserve spaces:
 
 Output:
 
-```textplain
+```text
 <div>
     Hello
 </div>

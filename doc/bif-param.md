@@ -1,7 +1,7 @@
 {:param; ... :}
 ===============
 
-Set custom parameters, no output.
+Set custom parameters, no output in set, output value in get.
 
 ```html
 {:param; name >> value :} {:* set *:}

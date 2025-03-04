@@ -1,4 +1,4 @@
-![neutral](doc/top-neutralts.png)
+![neutral](https://gitlab.com/neutralfw/neutralts/-/raw/master/top-neutralts.png)
 
 Neutral Web Template System
 ===========================
@@ -262,7 +262,7 @@ Native use (Rust)
 
 You need two things, a template file and a json schema:
 
-```plaintext
+```text
 
 let schema = json!({
     "config": {
@@ -329,7 +329,7 @@ Template file.ntpl:
 
 In Rust:
 
-```textplain
+```text
 let template = Template::from_file_value("file.ntpl", schema).unwrap();
 let content = template.render();
 

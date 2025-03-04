@@ -81,11 +81,11 @@ For a recursive version of the above with no level limit, the following snippets
 {:snippet; iterate-array-next-level >>
     {:^each; value key value >>
         {:array; value >>
-            {:;:}
-            {:;key:}:
+            {:;:}<br>
+            {:;key:}:<br>
             {:snippet; iterate-array-next-level :}
         :}{:else;
-            {:;:}
+            {:;:}<br>
             {:;key:}={:;value:}
         :}
     :}

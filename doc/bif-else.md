@@ -3,7 +3,7 @@
 
 Output code if the output of the above bif called is empty (zero length).
 
-```textplain
+```text
 {:else; code :}
 
 {:;varname:}{:else; shown if varname is empty :}
@@ -12,14 +12,17 @@ Output code if the output of the above bif called is empty (zero length).
 Modifiers:
 ----------
 
-```textplain
+```text
 {:^else; ... :}
 {:!else; ... :}
 ```
+### Modifier: ^ (upline)
+
+Eliminates previous whitespaces, (See "unprintable" for examples.)
 
 ### Modifier: ! (not)
 
-```textplain
+```text
 {:;varname:}{:!else; shown if varname is not empty :}
 ```
 
@@ -31,7 +34,7 @@ Nesting
 
 Can be nested (no limit):
 
-```textplain
+```text
 {:code; ... :}
 {:else;
     {:;varname:}{:else; ... :}
@@ -40,7 +43,7 @@ Can be nested (no limit):
 
 Grouping:
 
-```textplain
+```text
 {:code;
     {:;foor:}
     {:;bar:}
@@ -51,7 +54,7 @@ Grouping:
 
 Can be chained, the following is possible:
 
-```textplain
+```text
 {:code;
     {:;foor:}
     {:;bar:}
@@ -68,19 +71,19 @@ Usage
 
 Unpredictable results if not immediately after another bif, for example at the beginning of a template. Some bifs always return an empty string, so it doesn't make much sense to add "else" after.
 
-```textplain
+```text
 {:moveto; ... :}
 {:else; moveto always outputs an empty string :}
 ```
 
-```textplain
+```text
 {:param: ... :}
 {:else; param always outputs an empty string :}
 ```
 
 Regardless of the result of an expression, but the output of the block, in this example it does not matter if varname is defined, but if the block it returns is empty or not:
 
-```textplain
+```text
 {:defined; varname >> {:* void *:} :}
 {:else;
     The previous block is empty,
@@ -90,14 +93,14 @@ Regardless of the result of an expression, but the output of the block, in this 
 
 For a construction taking into account the result of the expression, you can do this other:
 
-```textplain
+```text
 {:defined; varname >> ... :}
 {:!defined; varname >> ... :}
 ```
 
 Only the output of the last bif is relevant, it does not matter if there is something else in between. Next is the same:
 
-```textplain
+```text
 {:code;
     {:;foor:}
     {:;bar:}
@@ -106,7 +109,7 @@ Only the output of the last bif is relevant, it does not matter if there is some
 :}
 ```
 
-```textplain
+```text
 {:code;
     {:;foor:}
     {:;bar:}
