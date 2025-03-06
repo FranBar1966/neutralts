@@ -1,0 +1,2307 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Rust Template Engine - Neutral TS"><title>neutralts - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="neutralts" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.1 (e71f9a9a9 2025-01-27)" data-channel="1.84.1" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../static.files/storage-59e33391.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../neutralts/index.html">neutralts</a><span class="version">1.2.5</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#rust-template-engine---neutral-ts" title="Rust Template Engine - Neutral TS">Rust Template Engine - Neutral TS</a><ul><li><a href="#rust" title="Rust">Rust</a></li></ul></li><li><a href="#syntax" title="Syntax">Syntax</a><ul><li><a href="#bif-layout" title="Bif layout">Bif layout</a></li><li><a href="#variables" title="Variables">Variables</a></li><li><a href="#nesting" title="Nesting">Nesting</a></li><li><a href="#grouping" title="Grouping">Grouping</a></li><li><a href="#wrapping" title="Wrapping">Wrapping</a></li><li><a href="#control-flow" title="Control flow">Control flow</a></li><li><a href="#links" title="Links">Links</a></li></ul></li><li><a href="#safety" title="Safety">Safety</a><ul><li><a href="#variables-1" title="Variables">Variables</a></li><li><a href="#files" title="Files">Files</a></li><li><a href="#cross-site-scripting-xss" title="Cross-Site Scripting (XSS)">Cross-Site Scripting (XSS)</a></li><li><a href="#rules" title="Rules">Rules</a></li></ul></li><li><a href="#schema" title="schema">schema</a><ul><li><a href="#rust-1" title="Rust">Rust</a></li></ul></li><li><a href="#scope-and-inheritance" title="Scope and inheritance">Scope and inheritance</a></li><li><a href="#modifiers" title="Modifiers">Modifiers</a><ul><li><a href="#modifier--upline" title="Modifier: ^ (upline)">Modifier: ^ (upline)</a></li><li><a href="#modifier--not" title="Modifier: ! (not)">Modifier: ! (not)</a></li><li><a href="#modifier--scope" title="Modifier: + (scope)">Modifier: + (scope)</a></li><li><a href="#modifier--filter" title="Modifier: &#38; (filter)">Modifier: &amp; (filter)</a></li></ul></li><li><a href="#-comment-" title="{:* comment *:}">{:* comment *:}</a></li><li><a href="#---var" title="{:; … :} (var)">{:; … :} (var)</a><ul><li><a href="#modifiers-1" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags" title="No flags">No flags</a></li><li><a href="#arrays" title="Arrays">Arrays</a></li><li><a href="#dynamic-evaluation" title="Dynamic evaluation">Dynamic evaluation</a></li><li><a href="#undefined" title="Undefined">Undefined</a></li></ul></li><li><a href="#-unprintable" title="{:;:} (unprintable)">{:;:} (unprintable)</a><ul><li><a href="#modifiers-2" title="Modifiers">Modifiers</a></li><li><a href="#no-flags-1" title="No flags">No flags</a></li><li><a href="#usage" title="Usage">Usage</a></li></ul></li><li><a href="#allow--" title="{:allow; … :}">{:allow; … :}</a><ul><li><a href="#modifiers-3" title="Modifiers:">Modifiers:</a></li><li><a href="#flags" title="Flags">Flags</a></li><li><a href="#word-declaration" title="Word declaration">Word declaration</a></li><li><a href="#examples" title="Examples">Examples</a></li></ul></li><li><a href="#array--" title="{:array; … :}">{:array; … :}</a><ul><li><a href="#modifiers-4" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-2" title="No flags">No flags</a></li><li><a href="#examples-1" title="Examples">Examples</a></li></ul></li><li><a href="#bool--" title="{:bool; … :}">{:bool; … :}</a><ul><li><a href="#modifiers-5" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-3" title="No flags">No flags</a></li><li><a href="#examples-2" title="Examples">Examples</a></li></ul></li><li><a href="#cache--" title="{:cache; … :}">{:cache; … :}</a><ul><li><a href="#example" title="Example">Example</a></li><li><a href="#modifiers-6" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-4" title="No flags">No flags</a></li><li><a href="#nesting-1" title="Nesting">Nesting</a></li><li><a href="#config" title="Config">Config</a></li><li><a href="#examples-3" title="Examples">Examples</a></li><li><a href="#clean-cache" title="clean-cache">clean-cache</a></li></ul></li><li><a href="#coalesce--" title="{:coalesce; … :}">{:coalesce; … :}</a><ul><li><a href="#modifiers-7" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-5" title="No flags">No flags</a></li><li><a href="#nesting-2" title="Nesting">Nesting</a></li><li><a href="#blocks" title="Blocks">Blocks</a></li><li><a href="#spaces" title="Spaces">Spaces</a></li></ul></li><li><a href="#code---1" title="{:code; … :}">{:code; … :}</a><ul><li><a href="#modifiers-8" title="Modifiers:">Modifiers:</a></li><li><a href="#flags-1" title="Flags">Flags</a></li><li><a href="#nesting-3" title="Nesting">Nesting</a></li><li><a href="#params" title="Params">Params</a></li></ul></li><li><a href="#contains--" title="{:contains; … :}">{:contains; … :}</a><ul><li><a href="#modifiers-9" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-6" title="No flags">No flags</a></li></ul></li><li><a href="#count--" title="{:count; … :}">{:count; … :}</a></li><li><a href="#data--" title="{:data; … :}">{:data; … :}</a><ul><li><a href="#modifiers-10" title="Modifiers">Modifiers</a></li><li><a href="#flags-2" title="Flags">Flags</a></li><li><a href="#examples-4" title="Examples">Examples</a></li></ul></li><li><a href="#date--" title="{:date; … :}">{:date; … :}</a><ul><li><a href="#modifiers-11" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-7" title="No flags">No flags</a></li></ul></li><li><a href="#declare--" title="{:declare; … :}">{:declare; … :}</a><ul><li><a href="#modifiers-12" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-8" title="No flags">No flags</a></li><li><a href="#wildcards" title="Wildcards">Wildcards</a></li><li><a href="#use-app-data" title="Use app data">Use app data</a></li><li><a href="#examples-5" title="Examples">Examples</a></li></ul></li><li><a href="#defined--" title="{:defined; … :}">{:defined; … :}</a><ul><li><a href="#modifiers-13" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-9" title="No flags">No flags</a></li><li><a href="#examples-6" title="Examples">Examples</a></li></ul></li><li><a href="#each--" title="{:each; … :}">{:each; … :}</a><ul><li><a href="#modifiers-14" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-10" title="No flags">No flags</a></li><li><a href="#nesting-4" title="Nesting">Nesting</a></li></ul></li><li><a href="#else--" title="{:else; … :}">{:else; … :}</a><ul><li><a href="#modifiers-15" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-11" title="No flags">No flags</a></li><li><a href="#nesting-5" title="Nesting">Nesting</a></li><li><a href="#usage-1" title="Usage">Usage</a></li></ul></li><li><a href="#eval--" title="{:eval; … :}">{:eval; … :}</a><ul><li><a href="#modifiers-16" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-12" title="No flags">No flags</a></li><li><a href="#usage-2" title="Usage">Usage</a></li></ul></li><li><a href="#exit--" title="{:exit; … :}">{:exit; … :}</a><ul><li><a href="#modifiers-17" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-13" title="No flags">No flags</a></li><li><a href="#some-uses" title="Some uses">Some uses</a></li><li><a href="#redirect" title="Redirect">Redirect</a></li><li><a href="#custom-status-codes" title="Custom status codes">Custom status codes</a></li><li><a href="#manage-in-the-app-native-rust" title="Manage in the app (native Rust)">Manage in the app (native Rust)</a></li><li><a href="#manage-in-the-app-others" title="Manage in the app (others)">Manage in the app (others)</a></li></ul></li><li><a href="#fetch--" title="{:fetch; … :}">{:fetch; … :}</a><ul><li><a href="#modifiers-18" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-14" title="No flags">No flags</a></li><li><a href="#event-auto" title="event auto">event auto</a></li><li><a href="#event-none" title="event none">event none</a></li><li><a href="#event-click" title="event click">event click</a></li><li><a href="#event-visible" title="event visible">event visible</a></li><li><a href="#event-form" title="event form">event form</a></li><li><a href="#js-variables" title="JS Variables">JS Variables</a></li><li><a href="#neutraljs" title="neutral.js">neutral.js</a></li></ul></li><li><a href="#filled--" title="{:filled; … :}">{:filled; … :}</a><ul><li><a href="#modifiers-19" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-15" title="No flags">No flags</a></li><li><a href="#examples-7" title="Examples">Examples</a></li></ul></li><li><a href="#flg--" title="{:flg; … :}">{:flg; … :}</a></li><li><a href="#for--" title="{:for; … :}">{:for; … :}</a><ul><li><a href="#modifiers-20" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-16" title="No flags">No flags</a></li><li><a href="#examples-8" title="Examples">Examples</a></li></ul></li><li><a href="#hash--" title="{:hash; … :}">{:hash; … :}</a><ul><li><a href="#modifiers-21" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-17" title="No flags">No flags</a></li><li><a href="#examples-9" title="Examples">Examples</a></li></ul></li><li><a href="#include--" title="{:include; … :}">{:include; … :}</a><ul><li><a href="#modifiers-22" title="Modifiers:">Modifiers:</a></li><li><a href="#flags-3" title="Flags">Flags</a></li><li><a href="#dynamic-evaluation-1" title="Dynamic evaluation">Dynamic evaluation</a></li><li><a href="#relative-to-current-file-path" title="Relative to current file path">Relative to current file path</a></li></ul></li><li><a href="#join--" title="{:join; … :}">{:join; … :}</a><ul><li><a href="#modifiers-23" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-18" title="No flags">No flags</a></li><li><a href="#example-1" title="Example">Example</a></li></ul></li><li><a href="#locale--" title="{:locale; … :}">{:locale; … :}</a><ul><li><a href="#modifiers-24" title="Modifiers:">Modifiers:</a></li><li><a href="#flags-4" title="Flags">Flags</a></li><li><a href="#return-value" title="Return value">Return value</a></li><li><a href="#dynamic-evaluation-2" title="Dynamic evaluation">Dynamic evaluation</a></li><li><a href="#translation-evaluation" title="Translation evaluation">Translation evaluation</a></li><li><a href="#relative-to-current-file-path-1" title="Relative to current file path">Relative to current file path</a></li></ul></li><li><a href="#moveto--" title="{:moveto; … :}">{:moveto; … :}</a><ul><li><a href="#modifiers-25" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-19" title="No flags">No flags</a></li><li><a href="#usage-3" title="Usage">Usage</a></li></ul></li><li><a href="#neutral--" title="{:neutral; … :}">{:neutral; … :}</a><ul><li><a href="#modifiers-26" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-20" title="No flags">No flags</a></li></ul></li><li><a href="#param--" title="{:param; … :}">{:param; … :}</a><ul><li><a href="#modifiers-27" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-21" title="No flags">No flags</a></li><li><a href="#usage-4" title="Usage">Usage</a></li></ul></li><li><a href="#rand--" title="{:rand; … :}">{:rand; … :}</a><ul><li><a href="#modifiers-28" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-22" title="No flags">No flags</a></li><li><a href="#examples-10" title="Examples">Examples</a></li></ul></li><li><a href="#redirect--" title="{:redirect; … :}">{:redirect; … :}</a><ul><li><a href="#modifiers-29" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-23" title="No flags">No flags</a></li><li><a href="#redirect-http" title="Redirect HTTP">Redirect HTTP</a></li><li><a href="#redirect-javascript" title="Redirect Javascript">Redirect Javascript</a></li><li><a href="#manage-in-the-app-native-rust-1" title="Manage in the app (native Rust)">Manage in the app (native Rust)</a></li><li><a href="#manage-in-the-app-others-1" title="Manage in the app (others)">Manage in the app (others)</a></li></ul></li><li><a href="#replace--" title="{:replace; … :}">{:replace; … :}</a><ul><li><a href="#modifiers-30" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-24" title="No flags">No flags</a></li><li><a href="#example-2" title="Example">Example</a></li></ul></li><li><a href="#same--" title="{:same; … :}">{:same; … :}</a></li><li><a href="#snippet--" title="{:snippet; … :}">{:snippet; … :}</a><ul><li><a href="#modifiers-31" title="Modifiers:">Modifiers:</a></li><li><a href="#flags-5" title="Flags">Flags</a></li><li><a href="#usage-5" title="Usage">Usage</a></li></ul></li><li><a href="#sum--" title="{:sum; … :}">{:sum; … :}</a><ul><li><a href="#modifiers-32" title="Modifiers:">Modifiers:</a></li><li><a href="#no-flags-25" title="No flags">No flags</a></li></ul></li><li><a href="#trans--" title="{:trans; … :}">{:trans; … :}</a><ul><li><a href="#modifiers-33" title="Modifiers">Modifiers</a></li><li><a href="#no-flags-26" title="No flags">No flags</a></li><li><a href="#references" title="References">References</a></li><li><a href="#non-text-translation" title="Non-text translation">Non-text translation</a></li></ul></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>neutralts</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/neutralts/main.rs.html#1-84">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="rust-template-engine---neutral-ts"><a class="doc-anchor" href="#rust-template-engine---neutral-ts">§</a>Rust Template Engine - Neutral TS</h2>
+<p>Neutral is a <strong>template engine</strong> for the Web, designed to work with <strong>any programming language</strong> (language-agnostic) via IPC and natively as library/crate in Rust.</p>
+<p>In this simple PWA example, all three use exactly the same templates.</p>
+<ul>
+<li><a href="https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/rust">Rust PWA example</a></li>
+<li><a href="https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python">Python PWA example</a></li>
+<li><a href="https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php">PHP PWA example</a></li>
+<li><a href="https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/neutral">Template</a></li>
+</ul>
+<p>(*) For non-Rust requires an IPC server that you can download from the <a href="https://gitlab.com/neutralfw/ipc">IPC repository</a></p>
+<p>The documentation of the <strong>web template</strong> engine is here: <a href="https://docs.rs/neutralts/latest/neutralts/doc/">template engine doc</a> and <strong>Rust</strong> documentation here: <a href="https://docs.rs/neutralts/latest/neutralts/">rust doc</a>.</p>
+<h3 id="rust"><a class="doc-anchor" href="#rust">§</a>Rust</h3>
+<p>In Rust it is enough with two methods, create the template with a file and a schema and then render:</p>
+<div class="example-wrap"><pre class="language-text"><code>// Data
+let schema = json!({
+    &quot;data&quot;: {
+        &quot;hello&quot;: &quot;Hello, World!&quot;,
+        &quot;site&quot;: {
+            &quot;name&quot;: &quot;My Site&quot;
+        }
+    }
+});
+
+// Create template
+// In file.ntpl use {:;hello:} and {:;site-&gt;name:} for show data.
+let template = Template::from_file_value(&quot;file.ntpl&quot;, schema).unwrap();
+
+// Render template
+let content = template.render();</code></pre></div><h2 id="syntax"><a class="doc-anchor" href="#syntax">§</a>Syntax</h2>
+<p>The main element of Neutral TS is the BIF (Build-in function), would be the equivalent of functions and would display an output, the output is always a string or nothing (empty string).</p>
+<h4 id="bif-layout"><a class="doc-anchor" href="#bif-layout">§</a>Bif layout</h4><div class="example-wrap"><pre class="language-text"><code>
+ .-- open bif
+ |     .-- bif name
+ |     |               .-- params
+ |     |               |             .-- code
+ |     |               |             |   .-- close bif
+ |     |               |             |   |
+ v     v               v             v   v
+ -- ------- --------------------  ------ --
+ {:!include; {:flg; ... :} file &gt;&gt;  ...  :}
+   -       - -------------      --
+   ^       ^      ^             ^
+   |       |      |             |
+   |       |      |             ·-- params/code separator
+   |       |      ·-- flags
+   |       ·-- name separator
+   ·-- modifier
+
+                         .-- source
+                         |
+                         v
+             ----------------------------
+ {:!include; {:flg; ... :} file &gt;&gt;  ...  :}
+ ------------------------------------------
+                     ^
+                     |
+                     ·-- Bif (Build-in function)
+</code></pre></div>
+<p>Bif example:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:filled; varname &gt;&gt;
+    Hello!
+:}</code></pre></div>
+<p>Sometimes they only carry parameters or code:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:snippet; snipname :}</code></pre></div>
+<p>Any number of spaces can be used to separate each part of a bif except the name, the following is an error:</p>
+<div class="example-wrap"><pre class="language-diff"><code>-{: filled ; varname &gt;&gt;
+    Hello!
+:}
+
++{:filled; varname &gt;&gt;
+    Hello!
+:}</code></pre></div>
+<p>Any other is valid:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:filled;varname&gt;&gt;Hello!:}
+
+{:filled;
+
+    varname
+
+    &gt;&gt;
+
+    Hello!
+
+:}
+
+{:filled; varname &gt;&gt;
+    Hello!
+:}</code></pre></div><h3 id="variables"><a class="doc-anchor" href="#variables">§</a>Variables</h3>
+<p>Variables are defined in the <code>schema</code> in the <code>data</code> key or in separate files that are loaded with <code>{:data; ... :}</code></p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;config&quot;: {},
+    &quot;inherit&quot;: {
+        &quot;locale&quot;: {
+            &quot;current&quot;: &quot;en&quot;,
+            &quot;trans&quot;: {}
+        }
+    },
+    &quot;data&quot;: {
+        &quot;site_name&quot;: &quot;MySite&quot;,
+        &quot;site&quot;: {
+            &quot;name&quot;: &quot;MySite&quot;
+        }
+    }
+}</code></pre></div>
+<p>Then all we have to do is <code>{:;varname:}</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:;site_name:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>MySite</code></pre></div>
+<p>Arrays with the “-&gt;” operator</p>
+<div class="example-wrap"><pre class="language-text"><code>{:;site-&gt;name:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>MySite</code></pre></div><h3 id="nesting"><a class="doc-anchor" href="#nesting">§</a>Nesting</h3>
+<p>By design all Bifs can be nested and there can be a Bif anywhere in another Bif except in the name.</p>
+<div class="example-wrap"><pre class="language-text"><code>{:eval; {:code; {:code; ... :} :} &gt;&gt;
+    {:code;
+        {:code;
+            ...
+        :}
+    :}
+:}</code></pre></div><h3 id="grouping"><a class="doc-anchor" href="#grouping">§</a>Grouping</h3><div class="example-wrap"><pre class="language-text"><code>{:coalesce;
+    {:code; {:* block 1 *:}
+        {:code; ... :}
+        {:code; ... :}
+        {:code; ... :}
+    :}
+    {:code; {:* block 2 *:}
+        {:code; ... :}
+    :}
+:}</code></pre></div><h3 id="wrapping"><a class="doc-anchor" href="#wrapping">§</a>Wrapping</h3>
+<p>Note the following example:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;li&gt;{:snippet; snippet-name :}&lt;/li&gt;</code></pre></div>
+<p>The output of the above if “snippet-name” is empty will be:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;li&gt;&lt;/li&gt;</code></pre></div>
+<p>To prevent this from happening, it can be done:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:eval; {:snippet; snippet-name :} &gt;&gt;
+    &lt;li&gt;{:;__eval__:}&lt;/li&gt;
+:}</code></pre></div><h3 id="control-flow"><a class="doc-anchor" href="#control-flow">§</a>Control flow</h3>
+<p>The following would be a form of flow control:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:filled; varname &gt;&gt;
+    {:snippet; snipname :}
+:}</code></pre></div>
+<p>Another:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:snippet; foo &gt;&gt;
+    ...
+:}
+
+{:snippet; bar &gt;&gt;
+    ...
+:}
+
+{:same; /{:;varname:}/foo/ &gt;&gt;
+    {:snippet; foo :}
+:}
+
+{:same; /{:;varname:}/bar/ &gt;&gt;
+    {:snippet; var :}
+:}</code></pre></div>
+<p>This is clearer and less computationally expensive:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:snippet; option-foo &gt;&gt;
+    ...
+:}
+
+{:snippet; option-bar &gt;&gt;
+    ...
+:}
+
+{:snippet; option-{:;varname:} :}</code></pre></div>
+<p>Calling a snippet that does not exist is not an error, it will result in a empty string that we can evaluate with <code>else</code>.</p>
+<div class="example-wrap"><pre class="language-text"><code>{:snippet; option-{:;varname:} :}
+{:else; {:snippet; option-default :} :}
+</code></pre></div><h3 id="links"><a class="doc-anchor" href="#links">§</a>Links</h3>
+<p>Neutral TS template engine.</p>
+<ul>
+<li><a href="https://docs.rs/neutralts/latest/neutralts/">Rust docs</a></li>
+<li><a href="https://docs.rs/neutralts/latest/neutralts/doc/">Template docs</a></li>
+<li><a href="https://gitlab.com/neutralfw/ipc">IPC server and clients</a></li>
+<li><a href="https://gitlab.com/neutralfw/neutralts">Repository</a></li>
+<li><a href="https://crates.io/crates/neutralts">Crate</a></li>
+<li><a href="https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app">Example Web App</a></li>
+<li><a href="https://gitlab.com/neutralfw/neutralts/-/tree/master/examples">Examples</a></li>
+</ul>
+<hr />
+<h2 id="safety"><a class="doc-anchor" href="#safety">§</a>Safety</h2>
+<p>By design the templates do not have access to arbitrary application data, the data has to be passed to the template in a JSON, then the data that you have not included in the JSON cannot be read by the template.</p>
+<h3 id="variables-1"><a class="doc-anchor" href="#variables-1">§</a>Variables</h3>
+<p>By design the value of the variables is not evaluated:</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;data&quot;: {
+        &quot;inject&quot;: &quot;{:exit;:}&quot;,
+    }
+}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;{:;inject:}&lt;/div&gt;
+&lt;div&gt;{:eval; {:;inject:} &gt;&gt; {:;__eval__:} :}&lt;/div&gt;
+&lt;div&gt;{:code; {:;inject:} :}&lt;/div&gt;
+&lt;div&gt;{:code; {:code; {:;inject:} :} :}&lt;/div&gt;</code></pre></div>
+<p>In no case is <code>{:exit;:}</code> evaluated, output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;{:exit;:}&lt;/div&gt;
+&lt;div&gt;{:exit;:}&lt;/div&gt;
+&lt;div&gt;{:exit;:}&lt;/div&gt;
+&lt;div&gt;{:exit;:}&lt;/div&gt;</code></pre></div>
+<p>This is especially important when someone tries to do this:</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;data&quot;: {
+        &quot;inject&quot;: &quot;{:include; /path/to/secrets :}&quot;
+    }
+}</code></pre></div>
+<p>When <code>cache_disable = false</code> on all values, possible bifs are filtered:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;{:;inject:}&lt;/div&gt;
+&lt;div&gt;{:eval; {:;inject:} &gt;&gt; {:;__eval__:} :}&lt;/div&gt;
+&lt;div&gt;{:code; {:;inject:} :}&lt;/div&gt;
+&lt;div&gt;{:code; {:code; {:;inject:} :} :}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;&amp;#123;:exit;:&amp;#125;&lt;/div&gt;
+&lt;div&gt;&amp;#123;:exit;:&amp;#125;&lt;/div&gt;
+&lt;div&gt;&amp;#123;:exit;:&amp;#125;&lt;/div&gt;
+&lt;div&gt;&amp;#123;:exit;:&amp;#125;&lt;/div&gt;</code></pre></div>
+<p>Note the following example:</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;data&quot;: {
+        &quot;secret&quot;: &quot;123456&quot;,
+        &quot;reference&quot;: &quot;secret&quot;
+    }
+}</code></pre></div>
+<p>The following will produce the error <code>insecure varname</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:; {:;reference:} :}</code></pre></div>
+<p>To evaluate a complete variable you must use <code>allow</code> or evaluate partially:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:; anything-{:;reference:} :}</code></pre></div>
+<p>The reason it can be partially evaluated is to be able to do this:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:; array-&gt;{:;key:} :}</code></pre></div>
+<p>In the same way that you can do something similar in any programming language:</p>
+<div class="example-wrap"><pre class="language-text"><code>$array[$key]</code></pre></div>
+<p>In this case you should take precautions or use <code>allow</code>, and as a rule, <strong>NEVER evaluate variables that come from the user</strong>, GET, POST, COOKIES, ENV, … if you are not using <code>allow</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:declare; valid &gt;&gt;
+    word1
+    word2
+:}
+
+{:;
+    {:allow; valid &gt;&gt; {:;reference:} :}
+:}</code></pre></div><h4 id="code--"><a class="doc-anchor" href="#code--">§</a>{:code; … :}</h4>
+<p>Unsafe variables can be displayed in a <code>code</code> block:</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;data&quot;: {
+        &quot;inject&quot;: &quot;&lt;div&gt;{:exit;:}&lt;/div&gt;&quot;,
+    }
+}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:;inject:}
+{:code; {:flg; safe :} &gt;&gt; {:;inject:} :}
+{:code; {:flg; encode_tags_after :} &gt;&gt; {:;inject:} :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;{:exit;:}&lt;/div&gt;
+&amp;#123;:;inject:&amp;#125;
+&amp;lt;div&amp;gt;{:exit;:}&amp;lt;&amp;#x2F;div&amp;gt;</code></pre></div><h3 id="files"><a class="doc-anchor" href="#files">§</a>Files</h3>
+<p>The following will produce the error <code>insecure file name</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:include; {:;varname:} :}</code></pre></div>
+<p>To evaluate a complete variable you must use <code>allow</code> or evaluate partially:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:include; anything-{:;varname:} :}</code></pre></div>
+<p>It is best to always use <code>allow</code> in <code>include</code> when using a variable in the file name, including the case of partial evaluation, and as a rule, <strong>NEVER evaluate variables that come from the user</strong>, GET, POST, COOKIES, ENV, … if you are not using <code>allow</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:declare; valid-files &gt;&gt;
+    home.ntpl
+    login.ntpl
+    error.ntpl
+:}
+
+{:include;
+    {:allow;
+        valid-files &gt;&gt; {:;varname:}
+    :}{:else;
+        error.ntpl
+    :}
+:}</code></pre></div><h3 id="cross-site-scripting-xss"><a class="doc-anchor" href="#cross-site-scripting-xss">§</a>Cross-Site Scripting (XSS)</h3>
+<p>There is a space reserved in the schema for variables coming from the user:</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;config&quot;: {},
+    &quot;inherit&quot;: {},
+    &quot;data&quot;: {
+        &quot;CONTEXT&quot;: {
+            &quot;ROUTE&quot;: &quot;&quot;,
+            &quot;HOST&quot;: &quot;&quot;,
+            &quot;GET&quot;: {},
+            &quot;POST&quot;: {},
+            &quot;HEADERS&quot;: {},
+            &quot;REQUEST&quot;: {},
+            &quot;FILES&quot;: {},
+            &quot;COOKIES&quot;: {},
+            &quot;SESSION&quot;: {},
+            &quot;ENV&quot;: {}
+        }
+    }
+}</code></pre></div>
+<p>All <code>CONTEXT</code> variables are filtered automatically:</p>
+<div class="example-wrap"><pre class="language-text"><code>&amp; → &amp;amp;
+&lt; → &amp;lt;
+&gt; → &amp;gt;
+&quot; → &amp;quot;
+&#39; → &amp;#x27;
+/ → &amp;#x2F;
+{ → &amp;#123;
+} → &amp;#125;</code></pre></div>
+<p>However, you must take care of assigning the variables coming from the user to <code>CONTEXT</code> in your application. This way of proceeding allows the templates to know the insecure variables, moreover, they can be identified at a glance in the code.</p>
+<p>The variable <strong>names is as unsafe</strong> as its value and is filtered by default.</p>
+<p>There is also a schema configuration to escape all variables <code>filter_all</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;config&quot;: {
+        &quot;filter_all&quot;: true
+    },
+    &quot;inherit&quot;: {},
+    &quot;data&quot;: {}
+}</code></pre></div>
+<p>Default is false.</p>
+<h3 id="rules"><a class="doc-anchor" href="#rules">§</a>Rules</h3>
+<ul>
+<li>Never trust on the context: GET, POST, COOKIES, ENV, …</li>
+<li>In the application never trust that the templates take care of security.</li>
+<li>In the templates never trust that the application is in charge of security.</li>
+</ul>
+<p>Act in your application as if the templates were insecure and filter all variables coming from the user and from insecure sources, do the same in your template, filter all variables from insecure sources.</p>
+<hr />
+<h2 id="schema"><a class="doc-anchor" href="#schema">§</a>schema</h2>
+<p>The <code>schema</code> is a JSON where we define the data that will represent the templates, as well as the configuration and translations, although you can render a template without <code>schema</code> since Neutral TS provides one by default, it will be of little use since it has no data.</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;config&quot;: {
+        &quot;comments&quot;: &quot;remove&quot;,
+        &quot;cache_prefix&quot;: &quot;neutral-cache&quot;,
+        &quot;cache_dir&quot;: &quot;&quot;,
+        &quot;cache_on_post&quot;: false,
+        &quot;cache_on_get&quot;: true,
+        &quot;cache_on_cookies&quot;: true,
+        &quot;cache_disable&quot;: false,
+        &quot;filter_all&quot;: false,
+        &quot;disable_js&quot;: false
+    },
+    &quot;inherit&quot;: {
+        &quot;locale&quot;: {
+            &quot;current&quot;: &quot;en&quot;,
+            &quot;trans&quot;: {
+                &quot;en&quot;: {
+                    &quot;Hello nts&quot;: &quot;Hello&quot;,
+                    &quot;ref:greeting-nts&quot;: &quot;Hello&quot;
+                },
+                &quot;es&quot;: {
+                    &quot;Hello nts&quot;: &quot;Hola&quot;,
+                    &quot;ref:greeting-nts&quot;: &quot;Hola&quot;
+                },
+                &quot;de&quot;: {
+                    &quot;Hello nts&quot;: &quot;Hallo&quot;,
+                    &quot;ref:greeting-nts&quot;: &quot;Hallo&quot;
+                },
+                &quot;fr&quot;: {
+                    &quot;Hello nts&quot;: &quot;Bonjour&quot;,
+                    &quot;ref:greeting-nts&quot;: &quot;Bonjour&quot;
+                },
+                &quot;el&quot;: {
+                    &quot;Hello nts&quot;: &quot;Γεια σας&quot;,
+                    &quot;ref:greeting-nts&quot;: &quot;Γεια σας&quot;
+                }
+            }
+        }
+    },
+    &quot;data&quot;: {
+        &quot;CONTEXT&quot;: {
+            &quot;ROUTE&quot;: &quot;&quot;,
+            &quot;HOST&quot;: &quot;&quot;,
+            &quot;GET&quot;: {},
+            &quot;POST&quot;: {},
+            &quot;HEADERS&quot;: {},
+            &quot;FILES&quot;: {},
+            &quot;COOKIES&quot;: {},
+            &quot;SESSION&quot;: {},
+            &quot;ENV&quot;: {}
+        },
+        &quot;web-site-name&quot;: &quot;MySite&quot;,
+        &quot;varname&quot;: &quot;value&quot;,
+        &quot;true&quot;: true,
+        &quot;false&quot;: false,
+        &quot;hello&quot;: &quot;hello&quot;,
+        &quot;zero&quot;: &quot;0&quot;,
+        &quot;one&quot;: &quot;1&quot;,
+        &quot;spaces&quot;: &quot;  &quot;,
+        &quot;empty&quot;: &quot;&quot;,
+        &quot;null&quot;: null,
+        &quot;emptyarr&quot;: [],
+        &quot;array&quot;: {
+            &quot;true&quot;: true,
+            &quot;false&quot;: false,
+            &quot;hello&quot;: &quot;hello&quot;,
+            &quot;zero&quot;: &quot;0&quot;,
+            &quot;one&quot;: &quot;1&quot;,
+            &quot;spaces&quot;: &quot;  &quot;,
+            &quot;empty&quot;: &quot;&quot;,
+            &quot;null&quot;: null
+        }
+    }
+}</code></pre></div><h3 id="rust-1"><a class="doc-anchor" href="#rust-1">§</a>Rust</h3><div class="example-wrap"><pre class="language-text"><code>let schema = json!({
+    &quot;inherit&quot;: {
+        &quot;locale&quot;: {
+            &quot;current&quot;: &quot;en&quot;
+        }
+    },
+    &quot;data&quot;: {
+        &quot;web_site_name&quot;: &quot;MySite&quot;
+    }
+});
+
+let template = Template::from_file_value(&quot;file.ntpl&quot;, schema).unwrap();
+let content = template.render();</code></pre></div>
+<hr />
+<h2 id="scope-and-inheritance"><a class="doc-anchor" href="#scope-and-inheritance">§</a>Scope and inheritance</h2>
+<p>By default the scope of the definitions is block inheritable to the children of the block:</p>
+<div class="example-wrap"><pre class="language-html"><code>   {:code; &lt;--------------------------.
+       {:* block *:}                  |&lt;---- Block
+       {:param; name &gt;&gt; value :} &lt;----|----- Set &quot;name&quot; for this block and its children
+       {:param; name :} &lt;-------------|----- &quot;name&quot; has the value &quot;value&quot;.
+       {:code;                        |
+           {:* child block *:}        |
+           {:param; name :} &lt;---------|----- &quot;name&quot; has the value &quot;value&quot;.
+       :}                             |
+   :} &lt;-------------------------------·
+   {:param; name :} &lt;----------------------- outside block, no value or a previous value if any.</code></pre></div>
+<p>“include” has a block scope, then:</p>
+<div class="example-wrap"><pre class="language-html"><code>   {:code;
+       {:* include for set &quot;snippet-name&quot; *:}
+       {:include; snippet.ntpl :}
+       {:snippet; snippet-name :} {:* Ok, &quot;snippet-name&quot; is set *:}
+   :}
+   {:snippet; snippet-name :} {:* Ko, &quot;snippet-name&quot; is not set *:}</code></pre></div>
+<p>The modifier scope (+) adds the scope to the current level</p>
+<div class="example-wrap"><pre class="language-html"><code>   {:+code;
+       {:* include for set &quot;snippet-name&quot; *:}
+       {:include; snippet.ntpl :}
+       {:snippet; snippet-name :} {:* Ok, &quot;snippet-name&quot; is set *:}
+   :}
+   {:snippet; snippet-name :} {:* Ok, &quot;snippet-name&quot; is set *:}</code></pre></div>
+<p>To make it possible to do this:</p>
+<div class="example-wrap"><pre class="language-html"><code>   {:bool; something &gt;&gt;
+       {:include; snippet.ntpl :}
+   :}
+   {:snippet; snippet-name :} {:* Ko, &quot;snippet-name&quot; is not set *:}
+
+   {:+bool; something &gt;&gt;
+       {:include; snippet.ntpl :}
+   :}
+   {:snippet; snippet-name :} {:* Ok, &quot;snippet-name&quot; is set *:}</code></pre></div>
+<hr />
+<h2 id="modifiers"><a class="doc-anchor" href="#modifiers">§</a>Modifiers</h2>
+<p>Modifiers allow changing the behavior of the bif and each bif may or may not support a certain modifier:</p>
+<div class="example-wrap"><pre class="language-text"><code>^ upline
+! not
++ scope
+&amp; filter</code></pre></div>
+<p>Example:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:^defined; varname &gt;&gt; ... :}
+{:!defined; varname &gt;&gt; ... :}
+{:+defined; varname &gt;&gt; ... :}
+{:&amp;;varname:}</code></pre></div>
+<p>Two or more modifiers can be combined, regardless of the order:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:^!defined; varname &gt;&gt; ... :}</code></pre></div><h4 id="modifier--upline"><a class="doc-anchor" href="#modifier--upline">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces.</p>
+<h4 id="modifier--not"><a class="doc-anchor" href="#modifier--not">§</a>Modifier: ! (not)</h4>
+<p>They usually negate, but may have less obvious behavior as in the case of bif trans.</p>
+<div class="example-wrap"><pre class="language-text"><code>{:defined; varname &gt;&gt; ... :}   {:* if varname is defined *:}
+{:!defined; varname &gt;&gt; ... :}  {:* if varname is not defined *:}
+
+{:trans; text :}               {:* translates the text or outputs text if no translation *:}
+{:!trans; text :}              {:* translates the text or outputs empty if no translation *:}
+
+{:exit; 302 :}                 {:* Terminate and set 302 status *:}
+{:!exit; 302 :}                {:* Set 302 status and continues executing *:}</code></pre></div><h4 id="modifier--scope"><a class="doc-anchor" href="#modifier--scope">§</a>Modifier: + (scope)</h4>
+<p>By default the scope of the definitions is block inheritable to the children of the block:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:code; &lt;--------------------------.
+    {:* block *:}                  |&lt;---- Block
+    {:param; name &gt;&gt; value :} &lt;----|----- Set &quot;name&quot; for this block and its children
+    {:param; name :} &lt;-------------|----- &quot;name&quot; has the value &quot;value&quot;.
+    {:code;                        |
+        {:* child block *:}        |
+        {:param; name :} &lt;---------|----- &quot;name&quot; has the value &quot;value&quot;.
+    :}                             |
+:} &lt;-------------------------------·
+{:param; name :} &lt;----------------------- outside block, no value or a previous value if any.</code></pre></div>
+<p>“include” has a block scope, then:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:code;
+    {:* include for set &quot;snippet-name&quot; *:}
+    {:include; snippet.ntpl :}
+    {:snippet; snippet-name :} {:* Ok, &quot;snippet-name&quot; is set *:}
+:}
+{:snippet; snippet-name :} {:* Ko, &quot;snippet-name&quot; is not set *:}</code></pre></div>
+<p>The modifier scope (+) adds the scope to the current level</p>
+<div class="example-wrap"><pre class="language-text"><code>{:+code;
+    {:* include for set &quot;snippet-name&quot; *:}
+    {:include; snippet.ntpl :}
+    {:snippet; snippet-name :} {:* Ok, &quot;snippet-name&quot; is set *:}
+:}
+{:snippet; snippet-name :} {:* Ok, &quot;snippet-name&quot; is set *:}</code></pre></div>
+<p>To make it possible to do this:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:bool; something &gt;&gt;
+    {:include; snippet.ntpl :}
+:}
+{:snippet; snippet-name :} {:* Ko, &quot;snippet-name&quot; is not set *:}
+
+{:+bool; something &gt;&gt;
+    {:include; snippet.ntpl :}
+:}
+{:snippet; snippet-name :} {:* Ok, &quot;snippet-name&quot; is set *:}</code></pre></div><h4 id="modifier--filter"><a class="doc-anchor" href="#modifier--filter">§</a>Modifier: &amp; (filter)</h4>
+<p>Escapes special HTML characters and braces:</p>
+<div class="example-wrap"><pre class="language-text"><code>&amp; → &amp;amp;
+&lt; → &amp;lt;
+&gt; → &amp;gt;
+&quot; → &amp;quot;
+&#39; → &amp;#x27;
+/ → &amp;#x2F;
+{ → &amp;#123;
+} → &amp;#125;</code></pre></div>
+<hr />
+<h2 id="-comment-"><a class="doc-anchor" href="#-comment-">§</a>{:* comment *:}</h2><div class="example-wrap"><pre class="language-html"><code>{:* This is a comment *:}
+
+{:*
+    This is a comment
+    -----------------
+*:}
+
+{:*
+    Nested comment
+    --------------
+    {:* comment
+        {:* comment
+            {:* ... *:}
+        *:}
+    *:}
+*:}</code></pre></div>
+<p>Comment inside build-in function:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:; varname {:* comment *:} :}
+
+{:code; {:* comment *:}
+    {:param; parvalue {:* comment *:} :}
+    {:param; parvalue :} {:* comment *:}
+    ...
+:}</code></pre></div>
+<p>The only place where we cannot insert a comment is the bif name, any other location is acceptable.</p>
+<hr />
+<h2 id="---var"><a class="doc-anchor" href="#---var">§</a>{:; … :} (var)</h2>
+<p>Output var value.</p>
+<div class="example-wrap"><pre class="language-text"><code>{:;varname:}
+{:;array-&gt;key:}</code></pre></div><h3 id="modifiers-1"><a class="doc-anchor" href="#modifiers-1">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-text"><code>{:^;varname:}
+{:&amp;;varname:}
+{:!;varname:}</code></pre></div><h4 id="modifier--upline-1"><a class="doc-anchor" href="#modifier--upline-1">§</a>Modifier: ^ (upline)</h4>
+<p>Assuming that the value of “varname” is “value”:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;&lt;/div&gt;
+
+{:;varname:}
+
+&lt;div&gt;&lt;/div&gt;
+
+{:^;varname:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;&lt;/div&gt;
+
+value
+
+&lt;div&gt;&lt;/div&gt;value</code></pre></div><h4 id="modifier--filter-1"><a class="doc-anchor" href="#modifier--filter-1">§</a>Modifier: &amp; (filter)</h4>
+<p>Escapes special HTML characters and braces:</p>
+<div class="example-wrap"><pre class="language-text"><code>&amp; → &amp;amp;
+&lt; → &amp;lt;
+&gt; → &amp;gt;
+&quot; → &amp;quot;
+&#39; → &amp;#x27;
+/ → &amp;#x2F;
+{ → &amp;#123;
+} → &amp;#125;</code></pre></div>
+<p>By default all user variables are filtered, those starting with <code>CONTEXT-&gt;</code>. There is also a schema configuration to escape all variables <code>filter_all</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;config&quot;: {
+        &quot;filter_all&quot;: true
+    },
+    &quot;inherit&quot;: {},
+    &quot;data&quot;: {}
+}</code></pre></div>
+<p>Default is false.</p>
+<h4 id="modifier--not-1"><a class="doc-anchor" href="#modifier--not-1">§</a>Modifier: ! (not)</h4>
+<p>Does not filter special HTML characters and braces, if combined with <code>&amp;</code> the result is no filtering.</p>
+<p>Avoid filtering a variable:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:!;CONTEXT-&gt;GET-&gt;var:}</code></pre></div>
+<p>The contradictory combination with <code>&amp;</code> results in no filtering:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:&amp;!;varname:}</code></pre></div><h3 id="no-flags"><a class="doc-anchor" href="#no-flags">§</a>No flags</h3><h3 id="arrays"><a class="doc-anchor" href="#arrays">§</a>Arrays</h3>
+<p>To access an array, use: “-&gt;”, no distinction between objects and arrays.
+Assuming:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;data&quot;: {
+        &quot;arr&quot;: [
+            &quot;value&quot;
+        ],
+        &quot;obj&quot;: {
+            &quot;0&quot;: &quot;value&quot;
+            &quot;arr&quot;: [
+                &quot;value&quot;
+            ],
+        }
+    }
+}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:;arr-&gt;0:}
+{:;obj-&gt;0:}
+{:;obj-&gt;arr-&gt;0:}</code></pre></div><h3 id="dynamic-evaluation"><a class="doc-anchor" href="#dynamic-evaluation">§</a>Dynamic evaluation</h3><div class="example-wrap"><pre class="language-text"><code>{:;array-&gt;{:;key:}:}</code></pre></div>
+<p>However, the following will produce an error:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:;{:;varname:}:}</code></pre></div>
+<p>For safety reasons, when evaluating the complete variable it is necessary to use “allow”:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:; {:allow; allowed-words-list &gt;&gt; {:;varname:} :} :}</code></pre></div>
+<p>In any case, you must use “allow” on any variable that comes from the context. See the “allow” and “declare” bifs for more details.</p>
+<h3 id="undefined"><a class="doc-anchor" href="#undefined">§</a>Undefined</h3>
+<p>It is not an error to use an undefined variable or an array, nor will it show any warning, in the case of an array it will show an empty string:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;{:;undefvar:}&lt;/div&gt;
+&lt;div&gt;{:;array:}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;</code></pre></div>
+<hr />
+<h2 id="-unprintable"><a class="doc-anchor" href="#-unprintable">§</a>{:;:} (unprintable)</h2>
+<p>Output empty string, eliminates or preserves spaces.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:;:}</code></pre></div><h3 id="modifiers-2"><a class="doc-anchor" href="#modifiers-2">§</a>Modifiers</h3><div class="example-wrap"><pre class="language-html"><code>{:^;:}</code></pre></div><h4 id="modifier--upline-2"><a class="doc-anchor" href="#modifier--upline-2">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates <strong>previous</strong> whitespaces.</p>
+<p>Assuming varname = Hello:</p>
+<div class="example-wrap"><pre class="language-texplain"><code>&lt;div&gt;&lt;/div&gt;
+
+{:;varname:}
+
+&lt;div&gt;&lt;/div&gt;
+
+{:^;:}{:;varname:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-texplain"><code>&lt;div&gt;&lt;/div&gt;
+
+Hello
+
+&lt;div&gt;&lt;/div&gt;Hello</code></pre></div>
+<p>Assuming varname = Hello:</p>
+<div class="example-wrap"><pre class="language-texplain"><code>-|
+{:;:}
+
+{:^;:}{:;varname:}
+-|
+
+{:^;:}{:;varname:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-texplain"><code>-|
+Hello
+-|Hello</code></pre></div><h3 id="no-flags-1"><a class="doc-anchor" href="#no-flags-1">§</a>No flags</h3><h3 id="usage"><a class="doc-anchor" href="#usage">§</a>Usage</h3>
+<p>The following are the same:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;{:;:}&lt;/div&gt;
+&lt;div&gt;{:; :}&lt;/div&gt;
+&lt;div&gt;{:;     :}&lt;/div&gt;
+&lt;div&gt;{:;
+
+:}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;</code></pre></div>
+<p>The usual behavior in output is as expected in practically all cases, the following produce the same output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;{:code;Hello:}&lt;/div&gt;
+&lt;div&gt;{:code; Hello :}&lt;/div&gt;
+&lt;div&gt;{:code;
+
+    Hello
+
+:}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;Hello&lt;/div&gt;
+&lt;div&gt;Hello&lt;/div&gt;
+&lt;div&gt;Hello&lt;/div&gt;</code></pre></div>
+<p>But in special cases we may need to make it so that spaces or carriage returns are not removed. And this is the main use of unprintable Bif:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;pre&gt;
+{:code;
+    {:^;:}
+    Hello
+    {:^;:}
+:}
+&lt;/pre&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;pre&gt;
+    Hello
+&lt;/pre&gt;</code></pre></div>
+<p>Preserve space:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;{:code;   Hello   :}&lt;/div&gt;
+&lt;div&gt;{:code; {:;:} Hello :}&lt;/div&gt;
+&lt;div&gt; {:code; Hello :}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;Hello&lt;/div&gt;
+&lt;div&gt; Hello&lt;/div&gt;
+&lt;div&gt; Hello&lt;/div&gt;</code></pre></div>
+<p>In the previous example:</p>
+<div class="example-wrap"><pre class="language-text"><code>                  .--- preserve
+                  |
+                  v
+&lt;div&gt;{:code; {:;:} Hello :}&lt;/div&gt;
+
+                  .--- preserve two
+                  ||
+                  vv
+&lt;div&gt;{:code; {:;:}  Hello :}&lt;/div&gt;</code></pre></div>
+<p>Not preserve spaces:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;
+    {:code;
+        Hello
+    :}
+&lt;/div&gt;
+&lt;div&gt;{:;
+    :}{:code;
+        Hello
+    :}{:;
+:}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;div&gt;
+    Hello
+&lt;/div&gt;
+&lt;div&gt;Hello&lt;/div&gt;</code></pre></div>
+<hr />
+<h2 id="allow--"><a class="doc-anchor" href="#allow--">§</a>{:allow; … :}</h2>
+<p>Output literal if the literal found from a list defined with “declare”, empty string if it fails.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:allow; declare-name &gt;&gt; literal :}
+
+{:allow; allowed-words-list &gt;&gt; {:;varname:} :}</code></pre></div>
+<p>In the above the output will be the content of varname, if that content is supported by allowed-words-list.</p>
+<p>It is mainly used for safety and its most common use is this one:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; {:allow; allowed-words-list &gt;&gt; {:;varname:} :} :}
+{:include; {:!allow; traversal &gt;&gt; {:;varname:} :} :}</code></pre></div>
+<p>In the first case it only supports values that reside in the word list, preventing arbitrary files from being accessed. The second case does not allow directory traversal.</p>
+<p>It is convenient to set a default value, as failure to do so will output an empty string:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include;
+    {:allow;
+        allowed-words-list &gt;&gt; {:;varname:}
+    :}{:else:
+        secure or default value
+    :}
+:}</code></pre></div>
+<p>Or:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include;
+    {:allow;
+        allowed-words-list &gt;&gt; {:;varname:}
+    :}{:else:
+        {:exit; 403 :}
+    :}
+:}</code></pre></div><h3 id="modifiers-3"><a class="doc-anchor" href="#modifiers-3">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:!allow; ... :}
+{:^allow; ... :}</code></pre></div><h4 id="modifier--upline-3"><a class="doc-anchor" href="#modifier--upline-3">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h4 id="modifier--not-2"><a class="doc-anchor" href="#modifier--not-2">§</a>Modifier: ! (not)</h4>
+<p>Output of an empty string in case it is found in the “declare”.</p>
+<h3 id="flags"><a class="doc-anchor" href="#flags">§</a>Flags</h3><div class="example-wrap"><pre class="language-html"><code>{:allow; {:flg; partial casein replace :} name &gt;&gt; ... :}</code></pre></div><h4 id="flag-partial"><a class="doc-anchor" href="#flag-partial">§</a>Flag: partial</h4>
+<p>It would be the equivalent of having wildcards in the word list, from “word” to “<em>word</em>”.</p>
+<h4 id="flag-casein"><a class="doc-anchor" href="#flag-casein">§</a>Flag: casein</h4>
+<p>Case insensitive</p>
+<h4 id="flag-replace"><a class="doc-anchor" href="#flag-replace">§</a>Flag: replace</h4>
+<p>Returns the word found (without wildcards) instead of the evaluation text.</p>
+<h3 id="word-declaration"><a class="doc-anchor" href="#word-declaration">§</a>Word declaration</h3>
+<p>With “declare” we define the list of words to be allowed or denied:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:declare; files &gt;&gt;
+    home.tpl
+    contact.tpl
+    about.tpl
+:}
+
+{:declare; traversal &gt;&gt;
+    /*
+    \\\\*
+    *\\.\\.*
+:}</code></pre></div>
+<p>Then, the following will produce an error:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include;
+    {:allow;
+        files &gt;&gt; passwd
+    :}{:else;
+        {:exit; 403 :}
+    :}
+:}</code></pre></div>
+<p>An error will also occur here:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include;
+    {:!allow;
+        traversal &gt;&gt; ../dir/file
+    :}{:else;
+        {:exit; 403 :}
+    :}
+:}</code></pre></div>
+<p>The most successful method to do this is the first one, where only the declared files are supported.</p>
+<p>Declare supports wildcards, see bif “declare” for details.</p>
+<h3 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h3>
+<p>Assumes:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:*
+    Allow any template file
+*:}
+{:declare; templates &gt;&gt;
+    *.ntpl
+:}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;{:allow; templates &gt;&gt; file.txt :}{:else; fails :}&lt;/div&gt;
+&lt;div&gt;{:allow; templates &gt;&gt; file.ntpl :}{:else; fails :}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;fails&lt;/div&gt;
+&lt;div&gt;file.ntpl&lt;/div&gt;</code></pre></div>
+<p>Assumes:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:*
+    Allow languages
+*:}
+{:declare; languages &gt;&gt;
+    en
+    en-??
+    en_??
+    es
+    es-??
+    es_??
+:}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;{:allow; languages &gt;&gt; fr :}{:else; fails :}&lt;/div&gt;
+&lt;div&gt;{:allow; languages &gt;&gt; es-ES :}{:else; fails :}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;fails&lt;/div&gt;
+&lt;div&gt;es-ES&lt;/div&gt;</code></pre></div>
+<p>Assumes:</p>
+<div class="example-wrap"><pre class="language-html"><code>    {:*
+        Allow languages
+    *:}
+    {:declare; languages &gt;&gt;
+        en
+        en???
+        es
+        es???
+    :}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-html"><code>    &lt;div&gt;{:allow; {:flg; replace :} languages &gt;&gt; de :}{:else; en :}&lt;/div&gt;
+    &lt;div&gt;{:allow; {:flg; replace :} languages &gt;&gt; es-ES :}{:else; en :}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>    &lt;div&gt;en&lt;/div&gt;
+    &lt;div&gt;es&lt;/div&gt;</code></pre></div>
+<hr />
+<h2 id="array--"><a class="doc-anchor" href="#array--">§</a>{:array; … :}</h2>
+<p>Output code if a variable is array.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:array; variable &gt;&gt; code :}
+
+{:array; varname &gt;&gt; this shown if varname is array :}</code></pre></div>
+<p>Note that there is no distinction between objects and arrays.</p>
+<h3 id="modifiers-4"><a class="doc-anchor" href="#modifiers-4">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:!array; ... :}
+{:+array; ... :}
+{:^array; ... :}</code></pre></div>
+<p>For more details about the “+” modifier see “modifiers”.</p>
+<h4 id="modifier--upline-4"><a class="doc-anchor" href="#modifier--upline-4">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h4 id="modifier-not"><a class="doc-anchor" href="#modifier-not">§</a>Modifier: not</h4><div class="example-wrap"><pre class="language-html"><code>{:!array; varname &gt;&gt; this shown if varname is not array :}</code></pre></div><h3 id="no-flags-2"><a class="doc-anchor" href="#no-flags-2">§</a>No flags</h3><h3 id="examples-1"><a class="doc-anchor" href="#examples-1">§</a>Examples</h3><div class="example-wrap"><pre class="language-html"><code>{:array; true          &gt;&gt; Not shown :}
+{:array; false         &gt;&gt; Not shown :}
+{:array; hello         &gt;&gt; Not shown :}
+{:array; zero          &gt;&gt; Not shown :}
+{:array; one           &gt;&gt; Not shown :}
+{:array; spaces        &gt;&gt; Not shown :}
+{:array; empty         &gt;&gt; Not shown :}
+{:array; null          &gt;&gt; Not shown :}
+{:array; undef         &gt;&gt; Not shown :}
+{:array; undefarr      &gt;&gt; Not shown :}
+{:array; emptyarr      &gt;&gt; Shown! :}
+{:array; array         &gt;&gt; Shown! :}
+{:array; array-&gt;true   &gt;&gt; Not shown :}
+{:array; array-&gt;false  &gt;&gt; Not shown :}
+{:array; array-&gt;hello  &gt;&gt; Not shown :}
+{:array; array-&gt;zero   &gt;&gt; Not shown :}
+{:array; array-&gt;one    &gt;&gt; Not shown :}
+{:array; array-&gt;spaces &gt;&gt; Not shown :}
+{:array; array-&gt;empty  &gt;&gt; Not shown :}
+{:array; array-&gt;null   &gt;&gt; Not shown :}
+{:array; array-&gt;undef  &gt;&gt; Not shown :}</code></pre></div>
+<p>Assumes data:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;data&quot;: {
+        &quot;true&quot;: true,
+        &quot;false&quot;: false,
+        &quot;hello&quot;: &quot;hello&quot;,
+        &quot;zero&quot;: &quot;0&quot;,
+        &quot;one&quot;: &quot;1&quot;,
+        &quot;spaces&quot;: &quot;  &quot;,
+        &quot;empty&quot;: &quot;&quot;,
+        &quot;null&quot;: null,
+        &quot;emptyarr&quot;: [],
+        &quot;array&quot;: {
+            &quot;true&quot;: true,
+            &quot;false&quot;: false,
+            &quot;hello&quot;: &quot;hello&quot;,
+            &quot;zero&quot;: &quot;0&quot;,
+            &quot;one&quot;: &quot;1&quot;,
+            &quot;spaces&quot;: &quot;  &quot;,
+            &quot;empty&quot;: &quot;&quot;,
+            &quot;null&quot;: null
+        }
+    }
+}</code></pre></div>
+<hr />
+<h2 id="bool--"><a class="doc-anchor" href="#bool--">§</a>{:bool; … :}</h2>
+<p>Output code if a variable is true</p>
+<div class="example-wrap"><pre class="language-html"><code>{:bool; variable &gt;&gt; code :}
+
+{:bool; varname &gt;&gt; this shown if varname is true :}</code></pre></div><h3 id="modifiers-5"><a class="doc-anchor" href="#modifiers-5">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:!bool; varname &gt;&gt; ... :}
+{:^bool; varname &gt;&gt; ... :}</code></pre></div><h4 id="modifier--upline-5"><a class="doc-anchor" href="#modifier--upline-5">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h4 id="modifier--not-3"><a class="doc-anchor" href="#modifier--not-3">§</a>Modifier: ! (not):</h4><div class="example-wrap"><pre class="language-html"><code>{:!bool; varname &gt;&gt; this shown if varname is false :}</code></pre></div><h3 id="no-flags-3"><a class="doc-anchor" href="#no-flags-3">§</a>No flags</h3><h3 id="examples-2"><a class="doc-anchor" href="#examples-2">§</a>Examples</h3><div class="example-wrap"><pre class="language-html"><code>{:bool; true          &gt;&gt; Shown! :}
+{:bool; false         &gt;&gt; Not shown :}
+{:bool; hello         &gt;&gt; Shown! :}
+{:bool; zero          &gt;&gt; Not shown :}
+{:bool; one           &gt;&gt; Shown! :}
+{:bool; spaces        &gt;&gt; Shown! :}
+{:bool; empty         &gt;&gt; Not shown :}
+{:bool; null          &gt;&gt; Not shown :}
+{:bool; undef         &gt;&gt; Not shown :}
+{:bool; undefarr      &gt;&gt; Not shown :}
+{:bool; emptyarr      &gt;&gt; Not shown :}
+{:bool; array         &gt;&gt; Shown! :}
+{:bool; array-&gt;true   &gt;&gt; Shown! :}
+{:bool; array-&gt;false  &gt;&gt; Not shown :}
+{:bool; array-&gt;hello  &gt;&gt; Shown! :}
+{:bool; array-&gt;zero   &gt;&gt; Not shown :}
+{:bool; array-&gt;one    &gt;&gt; Shown! :}
+{:bool; array-&gt;spaces &gt;&gt; Shown! :}
+{:bool; array-&gt;empty  &gt;&gt; Not shown :}
+{:bool; array-&gt;null   &gt;&gt; Not shown :}
+{:bool; array-&gt;undef  &gt;&gt; Not shown :}</code></pre></div>
+<p>Assumes data:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;data&quot;: {
+        &quot;true&quot;: true,
+        &quot;false&quot;: false,
+        &quot;hello&quot;: &quot;hello&quot;,
+        &quot;zero&quot;: &quot;0&quot;,
+        &quot;one&quot;: &quot;1&quot;,
+        &quot;spaces&quot;: &quot;  &quot;,
+        &quot;empty&quot;: &quot;&quot;,
+        &quot;null&quot;: null,
+        &quot;emptyarr&quot;: [],
+        &quot;array&quot;: {
+            &quot;true&quot;: true,
+            &quot;false&quot;: false,
+            &quot;hello&quot;: &quot;hello&quot;,
+            &quot;zero&quot;: &quot;0&quot;,
+            &quot;one&quot;: &quot;1&quot;,
+            &quot;spaces&quot;: &quot;  &quot;,
+            &quot;empty&quot;: &quot;&quot;,
+            &quot;null&quot;: null
+        }
+    }
+}</code></pre></div>
+<hr />
+<h2 id="cache--"><a class="doc-anchor" href="#cache--">§</a>{:cache; … :}</h2>
+<p>Output code an store in cache. It is a modular cache with the option to exclude parts of the cache.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:cache; /expires/id/only_custom_id/ &gt;&gt; code :}
+{:cache; /expires/id/ &gt;&gt; code :}
+{:cache; /expires/ &gt;&gt; code :}
+{:!cache; code :} {:* exclude from cache *:}</code></pre></div>
+<ul>
+<li>expires: Seconds of life in the cache</li>
+<li>id: Add a literal to the cache ID</li>
+<li>only_custom_id: Use only the ID passed as ID,</li>
+</ul>
+<p>The only mandatory parameter is <code>expires</code>, the cache automatically generates an ID with context data, such as language, cookies, … and code.</p>
+<p>With the <code>id</code> parameter you can add a literal to the ID that is automatically generated, or use just the <code>id</code> provided by adding a boolean true value to the third parameter:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:cache; /60/my-id/1/ &gt;&gt;
+    {:code; foo :}
+:}</code></pre></div>
+<p>The previous example replaces the automatic ID and this one adds:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:cache; /60/my-id/ &gt;&gt;
+    {:code; foo :}
+:}</code></pre></div>
+<p>Any delimiter can be used:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:cache; /expires/ &gt;&gt; ... :}
+{:cache; ~expires~ &gt;&gt; ... :}
+{:cache; #expires# &gt;&gt; ... :}
+{:cache; |expires| &gt;&gt; ... :}</code></pre></div><h3 id="example"><a class="doc-anchor" href="#example">§</a>Example</h3>
+<p>In this example the first date will be the same on every run for 300 seconds, the second date in the <code>!cache</code> block will not be included in the cache and will show a different date on every run.</p>
+<div class="example-wrap"><pre class="language-text"><code>{:cache; /300/ &gt;&gt;
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;title&gt;Cache&lt;/title&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+            &lt;main&gt;
+                &lt;div&gt;In cache:{:date; %H:%M:%S :}&lt;/div&gt;
+                &lt;div&gt;No cache:{:!cache; {:date; %H:%M:%S :} :}&lt;/div&gt;
+            &lt;/main&gt;
+        &lt;/body&gt;
+    &lt;/html&gt;
+:}</code></pre></div>
+<p>With the cache ID a hash is generated and this will be the name of the file in the cache, by including the code in the hash each <code>cache</code> block with different code will generate a different cache file. This will generate two different caches without the need to specify additional ID:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:cache; /120/ &gt;&gt;
+    {:code; foo :}
+:}
+{:cache; /120/ &gt;&gt;
+    {:code; bar :}
+:}</code></pre></div>
+<p>These two blocks of code being the same will have the same file in the cache:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:cache; /120/ &gt;&gt;
+    {:code; foo :}
+:}
+
+...
+
+{:cache; /120/ &gt;&gt;
+    {:code; foo :}
+:}</code></pre></div>
+<p><code>expires</code> is included in the ID, so these two blocks of code are distinct:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:cache; /60/ &gt;&gt;
+    {:code; foo :}
+:}
+{:cache; /120/ &gt;&gt;
+    {:code; foo :}
+:}</code></pre></div><h3 id="modifiers-6"><a class="doc-anchor" href="#modifiers-6">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^cache; ... :}
+{:!cache; ... :}</code></pre></div><h4 id="modifier--upline-6"><a class="doc-anchor" href="#modifier--upline-6">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h4 id="modifier--not-4"><a class="doc-anchor" href="#modifier--not-4">§</a>Modifier: ! (not)</h4>
+<p>Excludes parts of the cache, the “bar” block is excluded from the cache:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:cache; /300/ &gt;&gt;
+    {:code; foo :}
+    {:!cache; {:code; bar :} :}
+:}</code></pre></div>
+<p>You can use <code>!cache</code> outside a <code>cache</code> block to prevent that code from not being included in the cache in the future or by a parent:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Cache&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;main&gt;
+            &lt;div&gt;{:!cache; {:code; foo :} :}&lt;/div&gt;
+        &lt;/main&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre></div><h3 id="no-flags-4"><a class="doc-anchor" href="#no-flags-4">§</a>No flags</h3><h3 id="nesting-1"><a class="doc-anchor" href="#nesting-1">§</a>Nesting</h3>
+<p>It can be nested, either <code>cache</code> or <code>!cache</code> or a mixture of both:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:cache; /20/ &gt;&gt;
+    {:!cache;
+        {:date; %H:%M:%S :}
+        {:cache; /20/ &gt;&gt;
+            {:!cache;
+                {:date; %H:%M:%S :}
+            :}
+        :}
+    :}
+:}</code></pre></div><h3 id="config"><a class="doc-anchor" href="#config">§</a>Config</h3><div class="example-wrap"><pre class="language-text"><code>{
+    &quot;config&quot;: {
+        &quot;cache_prefix&quot;: &quot;neutral-cache&quot;,
+        &quot;cache_dir&quot;: &quot;&quot;,
+        &quot;cache_on_post&quot;: false,
+        &quot;cache_on_get&quot;: true,
+        &quot;cache_on_cookies&quot;: true,
+        &quot;cache_disable&quot;: false
+    },
+    &quot;inherit&quot;: {
+        &quot;locale&quot;: {
+            &quot;current&quot;: &quot;en&quot;
+        }
+    },
+    &quot;data&quot;: {
+        &quot;CONTEXT&quot;: {
+            &quot;ROUTE&quot;: &quot;&quot;,
+            &quot;HOST&quot;: &quot;&quot;,
+            &quot;GET&quot;: {},
+            &quot;POST&quot;: {},
+            &quot;HEADERS&quot;: {},
+            &quot;FILES&quot;: {},
+            &quot;COOKIES&quot;: {},
+            &quot;SESSION&quot;: {},
+            &quot;ENV&quot;: {}
+        }
+    }
+}</code></pre></div>
+<p>The language is included in the cache ID, so there will always be different versions of the cache for each language, the language is defined in <code>inherit.locale.current</code>.</p>
+<p>Various options can be set in the configuration:</p>
+<ul>
+<li>cache_prefix: Adds a prefix, one more level of cache directory.</li>
+<li>cache_dir: Directory where the cache files are stored, if empty, the temporary system directory.</li>
+<li>cache_on_post: Cache POST method, default false.</li>
+<li>cache_on_get: Cache GET method, default true.</li>
+<li>cache_on_cookies: Cache when cookies are present, default true.</li>
+<li>cache_disable: Completely disable the cache, default false.</li>
+</ul>
+<p>When <code>cache_disable = false</code> on all values, possible bifs are filtered.</p>
+<p><strong>In order for Neutral TS to detect POST, GET and cookies</strong>, in your application you will have to <strong>fill the <code>schema</code></strong> variable in <code>data</code> called <strong><code>CONTEXT</code></strong> with the POST, GET or cookie data.</p>
+<p>Since POST requests are almost all different, it is useless to cache the POST method.</p>
+<p>When GET or cookies are cached, different versions of the cache are generated for each variable or combination included in GET or cookies, using the automatic cache ID.</p>
+<h3 id="examples-3"><a class="doc-anchor" href="#examples-3">§</a>Examples</h3>
+<p>If we run the following:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:cache; /300/ &gt;&gt;
+    In cache: {:date; %S :}
+    No cache: {:!cache; {:date; %S :} :}
+:}</code></pre></div>
+<p>The first time will have the output:</p>
+<div class="example-wrap"><pre class="language-text"><code>In cache: 30
+No cache: 30</code></pre></div>
+<p>If we run it a second later, the <code>cache</code> part will be the same for 300 seconds, while the <code>!cache</code> part is always updated.</p>
+<div class="example-wrap"><pre class="language-text"><code>In cache: 30
+No cache: 31</code></pre></div>
+<p>Nesting:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:cache; /100/ &gt;&gt;
+    {:date; %H:%M:%S :}
+    {:cache; /300/ &gt;&gt;
+        {:date; %H:%M:%S :}
+        {:!cache; {:date; %H:%M:%S :} :}
+    :}
+:}</code></pre></div>
+<p>In the above example there is a global cache of 100 seconds and a nested cache of 300 seconds, the first date will be updated every 100 seconds and the second every 300 seconds. The last one in the <code>!cache</code> block will always be updated.</p>
+<p>If the expiry of the nested cache were equal to or less than that of its parent, it would have no effect, they would be updated at the same time.</p>
+<h3 id="clean-cache"><a class="doc-anchor" href="#clean-cache">§</a>clean-cache</h3>
+<p>There is a bash utility here: <a href="https://gitlab.com/neutralfw/neutralts/-/tree/master/cache-utils">cache-utils</a>  which can be run periodically to remove old cache files:</p>
+<div class="example-wrap"><pre class="language-text"><code>clean-cache /tmp/neutral-cache</code></pre></div>
+<p>The parameter is the cache directory, for security reasons the directory must contain the text “neutral-cache” to avoid deleting things that are not in the cache, also only the subdirectories and files that have the Neutral TS format are deleted.</p>
+<hr />
+<h2 id="coalesce--"><a class="doc-anchor" href="#coalesce--">§</a>{:coalesce; … :}</h2>
+<p>Output the first non-empty (non-zero length) of a <em>block</em> list. Nothing may be displayed if all blocks are empty.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:coalesce;
+    {:;varname1:}
+    {:;varname2:}
+    {:;varname3:}
+:}
+
+{:coalesce;
+    {:code;
+        {:code; ... :}
+        {:code; ... :}
+        {:code; ... :}
+    :}
+    {:code;
+        {:code; ... :}
+    :}
+    {:;varname:}
+:}</code></pre></div><h3 id="modifiers-7"><a class="doc-anchor" href="#modifiers-7">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:+coalesce; varname &gt;&gt; ... :}
+{:^coalesce; varname &gt;&gt; ... :}</code></pre></div>
+<p>For more details about the “+” modifier see “modifiers”.</p>
+<h4 id="modifier--upline-7"><a class="doc-anchor" href="#modifier--upline-7">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h3 id="no-flags-5"><a class="doc-anchor" href="#no-flags-5">§</a>No flags</h3><h3 id="nesting-2"><a class="doc-anchor" href="#nesting-2">§</a>Nesting</h3>
+<p>Can be nested (no limit):</p>
+<div class="example-wrap"><pre class="language-html"><code>{:coalesce;
+    {:coalesce;
+        {:code; ... :}
+        {:code; ... :}
+        {:code; ... :}
+    :}
+    {:code;
+        {:code; ... :}
+    :}
+:}</code></pre></div><h3 id="blocks"><a class="doc-anchor" href="#blocks">§</a>Blocks</h3>
+<p>Each <em>block</em> can be a single Bif, or a nested set of them:</p>
+<div class="example-wrap"><pre class="language-html"><code>                {:coalesce;
+              .---- {:code;
+              |         {:code; ... :}
+    Block --&gt; |         {:code; ... :}
+              |         {:code; ... :}
+              `---- :}
+              .---- {:code;
+    Block --&gt; |         {:code; ... :}
+              `---- :}
+    Block --------&gt; {:;varname:}
+                :}</code></pre></div><h3 id="spaces"><a class="doc-anchor" href="#spaces">§</a>Spaces</h3>
+<p>A variable with spaces is not a zero length string, the following example will show the contents of spaces:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:coalesce;
+    {:;spaces:}
+    {:code;
+        Hello
+    :}
+:}</code></pre></div>
+<p>In reality, spaces will not be displayed, the output will be empty, since the default behavior of <strong>neutral</strong> is to ignore spaces.</p>
+<p>If the variable with spaces was nested, then the result would be an empty block, the following will show “Hello”:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:coalesce;
+    {:code;
+        {:;spaces:}
+    :}
+    {:code;
+        Hello
+    :}
+:}</code></pre></div>
+<p>Unprintable Bif {:;:} is not a zero length string, the following will show nothing:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:coalesce;
+    {:code;
+        {:;:}
+    :}
+    {:code;
+        Hello
+    :}
+:}</code></pre></div>
+<p>Do not show anything if a condition is given:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:coalesce;
+    {:defined; varname &gt;&gt;
+        {:;:}
+    :}
+    {:code;
+        Hello
+    :}
+:}</code></pre></div>
+<hr />
+<h2 id="code---1"><a class="doc-anchor" href="#code---1">§</a>{:code; … :}</h2>
+<p>Output code without action.</p>
+<p>In some cases we need a block of code, “code” does nothing, simply encloses in block. It also serves as a wrapper to create parameters.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code; code :}
+
+{:code; This is always shown :}</code></pre></div><h3 id="modifiers-8"><a class="doc-anchor" href="#modifiers-8">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:+code; ... :}
+{:^code; ... :}</code></pre></div>
+<p>For more details about the “+” modifier see “modifiers”.</p>
+<h4 id="modifier--upline-8"><a class="doc-anchor" href="#modifier--upline-8">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h3 id="flags-1"><a class="doc-anchor" href="#flags-1">§</a>Flags</h3><div class="example-wrap"><pre class="language-html"><code>{:code; {:flg; safe noparse encode_tags encode_bifs encode_tags_after :} &gt;&gt; ... :}</code></pre></div><h4 id="flag-noparse"><a class="doc-anchor" href="#flag-noparse">§</a>Flag: noparse</h4>
+<p>Prevent the block’s bifs from being parsed, assuming that the value of varname is value:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    &lt;div&gt;{:;varname:}&lt;/div&gt;
+:}
+{:code; {:flg; noparse :} &gt;&gt;
+    &lt;div&gt;{:;varname:}&lt;/div&gt;
+:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;value&lt;/div&gt;
+&lt;div&gt;{:;varname:}&lt;/div&gt;</code></pre></div><h4 id="flag-encode_tags"><a class="doc-anchor" href="#flag-encode_tags">§</a>Flag: encode_tags</h4>
+<p>Encoding html tags, assuming that the value of varname is value:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    &lt;div&gt;{:;varname:}&lt;/div&gt;
+:}
+{:code; {:flg; encode_tags :} &gt;&gt;
+    &lt;div&gt;{:;varname:}&lt;/div&gt;
+:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;value&lt;/div&gt;
+&amp;lt;div&amp;gt;value&amp;lt;&amp;#x2F;div&amp;gt;</code></pre></div><h4 id="flag-encode_bifs"><a class="doc-anchor" href="#flag-encode_bifs">§</a>Flag: encode_bifs</h4>
+<p>Encoding bifs, when “{:” and “:}” characters are encoded, the bifs will not be parsed, assuming that the value of varname is value:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    &lt;div&gt;{:;varname:}&lt;/div&gt;
+:}
+{:code; {:flg; encode_bifs :} &gt;&gt;
+    &lt;div&gt;{:;varname:}&lt;/div&gt;
+:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;value&lt;/div&gt;
+&lt;div&gt;&amp;#123;:;varname:&amp;#125;&lt;/div&gt;</code></pre></div><h4 id="flag-safe"><a class="doc-anchor" href="#flag-safe">§</a>Flag: safe</h4>
+<p>Encoding all, safe implies noparse, encode_tags and encode_bifs, assuming that the value of varname is value:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    &lt;div&gt;{:;varname:}&lt;/div&gt;
+:}
+{:code; {:flg; safe :} &gt;&gt;
+    &lt;div&gt;{:;varname:}&lt;/div&gt;
+:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;value&lt;/div&gt;
+&amp;lt;div&amp;gt;&amp;#123;:;varname:&amp;#125;&amp;lt;&amp;#x2F;div&amp;gt;</code></pre></div><h4 id="flag-encode_tags_after"><a class="doc-anchor" href="#flag-encode_tags_after">§</a>Flag: encode_tags_after</h4>
+<p>Encoding html tags after parsing, assuming that the content of “file.ntlp” is:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;&lt;/div&gt;</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code; {:flg; encode_tags_after :} &gt;&gt;
+    {:include; file.ntlp :}
+:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>&amp;lt;div&amp;gt;&amp;lt;&amp;#x2F;div&amp;gt;</code></pre></div><h3 id="nesting-3"><a class="doc-anchor" href="#nesting-3">§</a>Nesting</h3>
+<p>Can be nested (no limit):</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    {:code;
+        {:code;
+            ...
+        :}
+    :}
+:}</code></pre></div>
+<p>Grouping:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:coalesce;
+    {:code; {:* block 1 *:}
+        {:code; ... :}
+        {:code; ... :}
+        {:code; ... :}
+    :}
+    {:code; {:* block 2 *:}
+        {:code; ... :}
+    :}
+:}</code></pre></div><h3 id="params"><a class="doc-anchor" href="#params">§</a>Params</h3>
+<p>If we need to create parameters they must necessarily reside in a “code” block:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    {:param; ... :}
+    {:param; ... :}
+    ...
+:}</code></pre></div>
+<p>See the bif “param” for more information on parameters.</p>
+<hr />
+<h2 id="contains--"><a class="doc-anchor" href="#contains--">§</a>{:contains; … :}</h2>
+<p>Output code if contains.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:contains; /literal/literal/ &gt;&gt; code :}
+{:contains; /haystack/needle/ &gt;&gt; code :}
+{:contains; /{:;varname:}/42/ &gt;&gt; ... :}</code></pre></div>
+<p>Any delimiter can be used:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:contains; ~haystack~needle~ &gt;&gt; ... :}
+{:contains; #haystack#needle# &gt;&gt; ... :}
+{:contains; |haystack|needle| &gt;&gt; ... :}
+{:contains; XhaystackXneedleX &gt;&gt; ... :}
+...</code></pre></div><h3 id="modifiers-9"><a class="doc-anchor" href="#modifiers-9">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-text"><code>{:^contains; ... :}
+{:!contains; ... :}</code></pre></div><h4 id="modifier--upline-9"><a class="doc-anchor" href="#modifier--upline-9">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h4 id="modifier--not-5"><a class="doc-anchor" href="#modifier--not-5">§</a>Modifier: ! (not)</h4><div class="example-wrap"><pre class="language-text"><code>{:!contains; /haystack/needle/ &gt;&gt; this shown if is not contains. :}</code></pre></div><h3 id="no-flags-6"><a class="doc-anchor" href="#no-flags-6">§</a>No flags</h3>
+<hr />
+<h2 id="count--"><a class="doc-anchor" href="#count--">§</a>{:count; … :}</h2>
+<p>DEPRECATED</p>
+<hr />
+<h2 id="data--"><a class="doc-anchor" href="#data--">§</a>{:data; … :}</h2>
+<p>Set local data from json file.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:data; local-data.json :}</code></pre></div>
+<p>The scope of the data is the file where it is loaded and its children.</p>
+<p>To access the variables, the prefix “local::” must be used:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:;local::varname:}</code></pre></div><h3 id="modifiers-10"><a class="doc-anchor" href="#modifiers-10">§</a>Modifiers</h3><div class="example-wrap"><pre class="language-html"><code>{:!data; ... :}
+{:^data; ... :}</code></pre></div>
+<p>The “not” modifier prevents the file from being reload if it has already been parsed.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:!data; file.json :}</code></pre></div><h3 id="flags-2"><a class="doc-anchor" href="#flags-2">§</a>Flags</h3><div class="example-wrap"><pre class="language-html"><code>{:data; {:flg; inline :} &gt;&gt; ... :}</code></pre></div><h4 id="flag-inline"><a class="doc-anchor" href="#flag-inline">§</a>Flag: inline</h4><div class="example-wrap"><pre class="language-html"><code>{:data; {:flg; inline :} &gt;&gt;
+    {
+        &quot;data&quot;: {
+            &quot;varname&quot;: &quot;value&quot;
+        }
+    }
+:}</code></pre></div><h3 id="examples-4"><a class="doc-anchor" href="#examples-4">§</a>Examples</h3>
+<p>Assumes local-data.json:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;data&quot;: {
+        &quot;hello&quot;: &quot;Hello!&quot;
+    }
+}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:data; local-data.json :}
+{:;local::hello:}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>Hello!</code></pre></div>
+<hr />
+<h2 id="date--"><a class="doc-anchor" href="#date--">§</a>{:date; … :}</h2>
+<p>Output UTC date</p>
+<div class="example-wrap"><pre class="language-html"><code>{:date;  :}</code></pre></div>
+<p>Default fotmat is timestamp</p>
+<div class="example-wrap"><pre class="language-html"><code>{:date; :}
+{:date; %Y-%m-%d %H:%M:%S  :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>1729001985
+2024-10-15 14:19:45</code></pre></div><h3 id="modifiers-11"><a class="doc-anchor" href="#modifiers-11">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^date; :}</code></pre></div><h3 id="no-flags-7"><a class="doc-anchor" href="#no-flags-7">§</a>No flags</h3>
+<hr />
+<h2 id="declare--"><a class="doc-anchor" href="#declare--">§</a>{:declare; … :}</h2>
+<p>Defines a list of allowed words separated by spaces for the bif “allow”, no output.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:declare; name &gt;&gt; words list :}</code></pre></div>
+<p>Note that declare <strong>must be defined in a file whose name contains the word “snippet”.</strong> An error will occur if an attempt is made to define it elsewhere.</p>
+<h3 id="modifiers-12"><a class="doc-anchor" href="#modifiers-12">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^declare; ... :}</code></pre></div><h3 id="no-flags-8"><a class="doc-anchor" href="#no-flags-8">§</a>No flags</h3><h3 id="wildcards"><a class="doc-anchor" href="#wildcards">§</a>Wildcards</h3>
+<ul>
+<li>(.) Dot, that matches any character.</li>
+<li>(?) Question, that matches exactly one character.</li>
+<li>(*) Asterisk, that matches zero or more characters.</li>
+</ul>
+<h3 id="use-app-data"><a class="doc-anchor" href="#use-app-data">§</a>Use app data</h3>
+<p>Assumes:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;data&quot;: {
+        &quot;themes&quot;: [
+            &quot;sketchy&quot;,
+            &quot;flatly&quot;,
+            &quot;darkly&quot;,
+            &quot;slate&quot;,
+            &quot;united&quot;
+        ]
+    }
+}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:declare; themes &gt;&gt;
+    {:each; themes key theme &gt;&gt;
+        {:;:} {:;theme:}
+    :}
+:}</code></pre></div>
+<p>Unprintable {:;:} is necessary to preserve a space between words.</p>
+<h3 id="examples-5"><a class="doc-anchor" href="#examples-5">§</a>Examples</h3><div class="example-wrap"><pre class="language-html"><code>{:declare; example &gt;&gt;
+    en-??
+    en_??
+    en.US
+    en?UK
+:}</code></pre></div><div class="example-wrap"><pre class="language-html"><code>{:declare; languages &gt;&gt;
+    en
+    en-??
+    en_??
+    es
+    es-??
+    es_??
+:}</code></pre></div><div class="example-wrap"><pre class="language-html"><code>{:declare; templates &gt;&gt;
+    *.ntpl
+:}</code></pre></div><div class="example-wrap"><pre class="language-html"><code>{:declare; colors &gt;&gt; red green blue :}</code></pre></div><div class="example-wrap"><pre class="language-html"><code>{:declare; any &gt;&gt; * :}</code></pre></div>
+<hr />
+<h2 id="defined--"><a class="doc-anchor" href="#defined--">§</a>{:defined; … :}</h2>
+<p>Output code if a variable is defined</p>
+<div class="example-wrap"><pre class="language-html"><code>{:defined; variable &gt;&gt; code :}
+
+{:defined; varname &gt;&gt; this shown if varname is defined :}</code></pre></div><h3 id="modifiers-13"><a class="doc-anchor" href="#modifiers-13">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^defined; ... :}
+{:!defined; ... :}
+{:+defined; ... :}</code></pre></div>
+<p>For more details about the “+” modifier see “modifiers”.</p>
+<h4 id="modifier--not-6"><a class="doc-anchor" href="#modifier--not-6">§</a>Modifier: ! (not)</h4><div class="example-wrap"><pre class="language-html"><code>{:!defined; varname &gt;&gt; this shown if varname is not defined :}</code></pre></div><h3 id="no-flags-9"><a class="doc-anchor" href="#no-flags-9">§</a>No flags</h3><h3 id="examples-6"><a class="doc-anchor" href="#examples-6">§</a>Examples</h3><div class="example-wrap"><pre class="language-html"><code>{:defined; true          &gt;&gt; Shown! :}
+{:defined; false         &gt;&gt; Shown! :}
+{:defined; hello         &gt;&gt; Shown! :}
+{:defined; zero          &gt;&gt; Shown! :}
+{:defined; one           &gt;&gt; Shown! :}
+{:defined; spaces        &gt;&gt; Shown! :}
+{:defined; empty         &gt;&gt; Shown! :}
+{:defined; null          &gt;&gt; Not shown :}
+{:defined; undef         &gt;&gt; Not shown :}
+{:defined; undefarr      &gt;&gt; Not shown :}
+{:defined; emptyarr      &gt;&gt; Shown! :}
+{:defined; array         &gt;&gt; Shown! :}
+{:defined; array-&gt;true   &gt;&gt; Shown! :}
+{:defined; array-&gt;false  &gt;&gt; Shown! :}
+{:defined; array-&gt;hello  &gt;&gt; Shown! :}
+{:defined; array-&gt;zero   &gt;&gt; Shown! :}
+{:defined; array-&gt;one    &gt;&gt; Shown! :}
+{:defined; array-&gt;spaces &gt;&gt; Shown! :}
+{:defined; array-&gt;empty  &gt;&gt; Shown! :}
+{:defined; array-&gt;null   &gt;&gt; Not shown :}
+{:defined; array-&gt;undef  &gt;&gt; Not shown :}</code></pre></div>
+<p>Assumes data:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;data&quot;: {
+        &quot;true&quot;: true,
+        &quot;false&quot;: false,
+        &quot;hello&quot;: &quot;hello&quot;,
+        &quot;zero&quot;: &quot;0&quot;,
+        &quot;one&quot;: &quot;1&quot;,
+        &quot;spaces&quot;: &quot;  &quot;,
+        &quot;empty&quot;: &quot;&quot;,
+        &quot;null&quot;: null,
+        &quot;emptyarr&quot;: [],
+        &quot;array&quot;: {
+            &quot;true&quot;: true,
+            &quot;false&quot;: false,
+            &quot;hello&quot;: &quot;hello&quot;,
+            &quot;zero&quot;: &quot;0&quot;,
+            &quot;one&quot;: &quot;1&quot;,
+            &quot;spaces&quot;: &quot;  &quot;,
+            &quot;empty&quot;: &quot;&quot;,
+            &quot;null&quot;: null
+        }
+    }
+}</code></pre></div>
+<hr />
+<h2 id="each--"><a class="doc-anchor" href="#each--">§</a>{:each; … :}</h2>
+<p>Iterate array.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:each; array keyname valuename &gt;&gt;
+    code
+:}
+
+{:each; array-name key value &gt;&gt;
+    {:;key:}={:;value:}
+:}</code></pre></div><h3 id="modifiers-14"><a class="doc-anchor" href="#modifiers-14">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^each; ... :}</code></pre></div><h3 id="no-flags-10"><a class="doc-anchor" href="#no-flags-10">§</a>No flags</h3><h3 id="nesting-4"><a class="doc-anchor" href="#nesting-4">§</a>Nesting</h3>
+<p>Can be nested (no limit), the following iterates an array, for more levels to increase the nesting:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:^each; array key val &gt;&gt;
+    {:array; val &gt;&gt;
+        {:;:}
+        {:;key:}:
+        {:^each; val key val &gt;&gt;
+            {:array; val &gt;&gt;
+                {:;:}
+                {:;key:}:
+                {:^each; val key val &gt;&gt;
+                    {:array; val &gt;&gt;
+                        {:;:}
+                        {:;key:}:
+                        {:^each; val key val &gt;&gt;
+                            {:;:}
+                            {:;key:}={:;val:}
+                        :}
+                    :}{:else;
+                        {:;:}
+                        {:;key:}={:;val:}
+                    :}
+                :}
+            :}{:else;
+                {:;:}
+                {:;key:}={:;val:}
+            :}
+        :}
+    :}{:else;
+        {:;:}
+        {:;key:}={:;val:}
+    :}
+:}</code></pre></div>
+<p>For a recursive version of the above with no level limit, the following snippets could be set:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; iterate-array &gt;&gt;
+    {:^each; {:param; array-name :} key value &gt;&gt;
+        {:array; value &gt;&gt;
+            {:;:}
+            {:;key:}:
+            {:snippet; iterate-array-next-level :}
+        :}{:else;
+            {:;:}
+            {:;key:}={:;value:}
+        :}
+    :}
+:}
+
+{:snippet; iterate-array-next-level &gt;&gt;
+    {:^each; value key value &gt;&gt;
+        {:array; value &gt;&gt;
+            {:;:}&lt;br&gt;
+            {:;key:}:&lt;br&gt;
+            {:snippet; iterate-array-next-level :}
+        :}{:else;
+            {:;:}&lt;br&gt;
+            {:;key:}={:;value:}
+        :}
+    :}
+:}</code></pre></div>
+<hr />
+<h2 id="else--"><a class="doc-anchor" href="#else--">§</a>{:else; … :}</h2>
+<p>Output code if the output of the above bif called is empty (zero length).</p>
+<div class="example-wrap"><pre class="language-text"><code>{:else; code :}
+
+{:;varname:}{:else; shown if varname is empty :}</code></pre></div><h3 id="modifiers-15"><a class="doc-anchor" href="#modifiers-15">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-text"><code>{:^else; ... :}
+{:!else; ... :}</code></pre></div><h4 id="modifier--upline-10"><a class="doc-anchor" href="#modifier--upline-10">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h4 id="modifier--not-7"><a class="doc-anchor" href="#modifier--not-7">§</a>Modifier: ! (not)</h4><div class="example-wrap"><pre class="language-text"><code>{:;varname:}{:!else; shown if varname is not empty :}</code></pre></div><h3 id="no-flags-11"><a class="doc-anchor" href="#no-flags-11">§</a>No flags</h3><h3 id="nesting-5"><a class="doc-anchor" href="#nesting-5">§</a>Nesting</h3>
+<p>Can be nested (no limit):</p>
+<div class="example-wrap"><pre class="language-text"><code>{:code; ... :}
+{:else;
+    {:;varname:}{:else; ... :}
+:}</code></pre></div>
+<p>Grouping:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:code;
+    {:;foor:}
+    {:;bar:}
+:}{:else;
+    foo and bar are empty
+:}</code></pre></div>
+<p>Can be chained, the following is possible:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:code;
+    {:;foor:}
+    {:;bar:}
+:}{:else;
+    foo and bar are empty
+:}{:else;
+    {:* if previous &quot;else&quot; is empty *:}
+    foo or bar are not empty
+:}</code></pre></div><h3 id="usage-1"><a class="doc-anchor" href="#usage-1">§</a>Usage</h3>
+<p>Unpredictable results if not immediately after another bif, for example at the beginning of a template. Some bifs always return an empty string, so it doesn’t make much sense to add “else” after.</p>
+<div class="example-wrap"><pre class="language-text"><code>{:moveto; ... :}
+{:else; moveto always outputs an empty string :}</code></pre></div><div class="example-wrap"><pre class="language-text"><code>{:param: ... :}
+{:else; param always outputs an empty string :}</code></pre></div>
+<p>Regardless of the result of an expression, but the output of the block, in this example it does not matter if varname is defined, but if the block it returns is empty or not:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:defined; varname &gt;&gt; {:* void *:} :}
+{:else;
+    The previous block is empty,
+    but I don&#39;t know what happened to varname
+:}</code></pre></div>
+<p>For a construction taking into account the result of the expression, you can do this other:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:defined; varname &gt;&gt; ... :}
+{:!defined; varname &gt;&gt; ... :}</code></pre></div>
+<p>Only the output of the last bif is relevant, it does not matter if there is something else in between. Next is the same:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:code;
+    {:;foor:}
+    {:;bar:}
+:}{:else;
+    foo and bar are empty
+:}</code></pre></div><div class="example-wrap"><pre class="language-text"><code>{:code;
+    {:;foor:}
+    {:;bar:}
+:}
+&lt;div&gt;
+    ...
+&lt;/div&gt;
+{:else;
+    foo and bar are empty
+:}</code></pre></div>
+<p>But the second way will be confusing.</p>
+<hr />
+<h2 id="eval--"><a class="doc-anchor" href="#eval--">§</a>{:eval; … :}</h2>
+<p>Output code if the result of eval is not empty (non-zero length).</p>
+<div class="example-wrap"><pre class="language-html"><code>{:eval; code &gt;&gt; code :}
+
+{:eval; {:;varname:} &gt;&gt;
+    shown if varname is not empty
+:}</code></pre></div>
+<p>A variable is set with the result of the evaluation:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:eval; {:;varname:} &gt;&gt;
+    ...
+    {:;__eval__:}
+    ...
+:}</code></pre></div><h3 id="modifiers-16"><a class="doc-anchor" href="#modifiers-16">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:!eval; ... :}
+{:+eval; ... :}
+{:^eval; ... :}</code></pre></div>
+<p>For more details about the “+” modifier see “modifiers”.</p>
+<h4 id="modifier--not-8"><a class="doc-anchor" href="#modifier--not-8">§</a>Modifier: ! (not)</h4><div class="example-wrap"><pre class="language-html"><code>{:!eval; {:;varname:} &gt;&gt;
+    shown if varname is empty
+:}</code></pre></div><h3 id="no-flags-12"><a class="doc-anchor" href="#no-flags-12">§</a>No flags</h3><h3 id="usage-2"><a class="doc-anchor" href="#usage-2">§</a>Usage</h3>
+<p>Eval evaluates code versus filled which evaluates a variable:</p>
+<div class="example-wrap"><pre class="language-html"><code>    {:filled; varname &gt;&gt;
+        ...
+    :}
+
+    {:eval; {:code: {:;varname:} :} &gt;&gt;
+        ...
+    :}</code></pre></div>
+<p>Sometimes it is necessary to evaluate code:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;li&gt;{:snippet; snippet-name :}&lt;/li&gt;</code></pre></div>
+<p>The output of the above if “snippet-name” is empty will be:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;li&gt;&lt;/li&gt;</code></pre></div>
+<p>To prevent this from happening, it can be done:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:eval; {:snippet; snippet-name :} &gt;&gt;
+    &lt;li&gt;{:;__eval__:}&lt;/li&gt;
+:}</code></pre></div>
+<p>And in this case the “li” will only be displayed if “snippet-name” is not empty.</p>
+<p>The following are equivalent, but the first does not require re-evaluation of the snippet and may be clearer as to what is intended:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:eval; {:snippet; snippet-name :} &gt;&gt;
+    &lt;li&gt;{:;__eval__:}&lt;/li&gt;
+:}</code></pre></div><div class="example-wrap"><pre class="language-html"><code>{:eval; {:snippet; snippet-name :} &gt;&gt;
+    &lt;li&gt;{:snippet; snippet-name :}&lt;/li&gt;
+:}</code></pre></div>
+<p>This is also possible</p>
+<div class="example-wrap"><pre class="language-html"><code>{:eval; {:;varname1:}{:;varname2:} &gt;&gt;
+    ...
+    {:;__eval__:}
+    ...
+:}</code></pre></div><div class="example-wrap"><pre class="language-html"><code>{:eval;
+    {:code;
+        ... a lot of code here ...
+    :}
+    &gt;&gt;
+    ...
+    {:;__eval__:}
+    ...
+:}</code></pre></div>
+<p>Can also be used to prevent output, in the following example, we want the include to show a possible output:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:+eval; {:include; file :} &gt;&gt; :}</code></pre></div>
+<p>For more details about the “+” modifier see “modifiers”.</p>
+<hr />
+<h2 id="exit--"><a class="doc-anchor" href="#exit--">§</a>{:exit; … :}</h2>
+<p>Terminate the current template with status code, 200 by default. No output.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:exit; HTTP-STATUS-CODE :}
+
+{:exit; :}</code></pre></div>
+<p>It is important to know that the <strong>status codes must be managed by the application</strong>, this bif is limited to set them and to terminate the template.</p>
+<p>In addition, in <strong>status codes 400 to 599, 301, 302, 303, 307 and 308</strong> the rendered <strong>content is removed</strong> and replaced by the status code.</p>
+<h3 id="modifiers-17"><a class="doc-anchor" href="#modifiers-17">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:!exit; ... :}</code></pre></div><h4 id="modifier--not-9"><a class="doc-anchor" href="#modifier--not-9">§</a>Modifier: ! (not)</h4>
+<p>The “not” modifier prevents termination, continues executing the template and is limited only to setting a status code:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:!exit; 202 :}</code></pre></div><h3 id="no-flags-13"><a class="doc-anchor" href="#no-flags-13">§</a>No flags</h3><h3 id="some-uses"><a class="doc-anchor" href="#some-uses">§</a>Some uses</h3>
+<p>In the following examples, the template is terminated and a status code is set:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:exit; 401 :}
+{:exit; 403 :}
+{:exit; 404 :}
+{:exit; 503 :}</code></pre></div>
+<p>A parameter is set here:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:exit; 500 &gt;&gt; reason :}</code></pre></div><h3 id="redirect"><a class="doc-anchor" href="#redirect">§</a>Redirect</h3>
+<p>With status codes 301, 302, 303, 307 and 308 you can create a redirect by adding the URL to the parameters:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:exit; 301 &gt;&gt; /page :}
+{:exit; 302 &gt;&gt; /page :}
+{:exit; 303 &gt;&gt; /page :}
+{:exit; 307 &gt;&gt; https://example.com :}
+{:exit; 308 &gt;&gt; https://example.com :}</code></pre></div>
+<p>The “redirect” bif also performs this task.</p>
+<h3 id="custom-status-codes"><a class="doc-anchor" href="#custom-status-codes">§</a>Custom status codes</h3>
+<p>Status codes from 100 to 999 are used or could be used in the future by the HTTP protocol, so it is better not to use them, but we could use a larger code to create our custom status codes.</p>
+<p>For example, if we want to change the behavior of the 404 error where the content is removed when it is set, the status code “10404” could be used</p>
+<div class="example-wrap"><pre class="language-html"><code>{:exit; 10404 :}</code></pre></div>
+<p>Or:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:exit; 10401 &gt;&gt; reason :}</code></pre></div>
+<p>And manage it in the application in another way.</p>
+<h3 id="manage-in-the-app-native-rust"><a class="doc-anchor" href="#manage-in-the-app-native-rust">§</a>Manage in the app (native Rust)</h3>
+<p>If you use the bif “exit” or “redirect” it is necessary to manage the status codes in the application, it will depend on the environment or framework you are using, it could be something like this:</p>
+<div class="example-wrap"><pre class="language-text"><code>let template = Template::from_file_value(&quot;file.ntpl&quot;, schema).unwrap();
+let content = template.render();
+
+// e.g.: 500
+let status_code = template.get_status_code();
+
+// e.g.: Internal Server Error
+let status_text = template.get_status_text();
+
+// e.g.: template error x
+let status_param = template.get_status_param();
+
+// act accordingly at this point</code></pre></div>
+<p>It may be the case that the template contains a syntax error, in which case set the status code 500 and in the parameter the reason, by default the content is blank.</p>
+<h3 id="manage-in-the-app-others"><a class="doc-anchor" href="#manage-in-the-app-others">§</a>Manage in the app (others)</h3>
+<p>Each programming language can implement it in a different way, see the IPC client of each language.</p>
+<p>There will usually be an equivalent function with the same name as those in Rust.</p>
+<hr />
+<h2 id="fetch--"><a class="doc-anchor" href="#fetch--">§</a>{:fetch; … :}</h2>
+<p>Perform a JS fetch request.</p>
+<div class="example-wrap"><pre class="language-text"><code>{:fetch; |url|event|wrapperId|class|id|name| &gt;&gt; code :}</code></pre></div>
+<p>Code is the html that will be displayed before performing the <code>fetch</code>, it can be a message, a button or the fields of a form.</p>
+<ul>
+<li>url: url to perform fetch, mandatory.</li>
+<li>event: can be; none, form, visible, click, auto, default auto.</li>
+<li>wrapperId: alternative container wrapper ID, default none</li>
+<li>class: add to container class, default none</li>
+<li>id: container ID, default none</li>
+<li>name: container name, default none</li>
+</ul>
+<p>The url is the only mandatory parameter:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:fetch; &quot;/url&quot; &gt;&gt; &lt;div&gt;loading...&lt;/div&gt; :}</code></pre></div>
+<p>Any delimiter can be used, but a delimiter is always required, even if only one parameter is used.</p>
+<div class="example-wrap"><pre class="language-text"><code>{:fetch; &quot;url&quot; &gt;&gt; ... :}
+{:fetch; ~url~event~ &gt;&gt; ... :}
+{:fetch; #url#event# &gt;&gt; ... :}
+{:fetch; |url|event| &gt;&gt; ... :}
+{:fetch; &#39;url&#39;event&#39; &gt;&gt; ... :}
+...</code></pre></div>
+<p>The reason you can use different delimiters is to use one that does not appear in the parameter, using <code>/</code> would cause problems with the <code>url</code> so we use <code>"</code> or any other:</p>
+<div class="example-wrap"><pre class="language-diff"><code>-{:fetch; //url/ &gt;&gt; ... :} {:* error *:}
++{:fetch; &quot;/url&quot; &gt;&gt; ... :}</code></pre></div><h3 id="modifiers-18"><a class="doc-anchor" href="#modifiers-18">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-text"><code>{:^fetch; ... :}</code></pre></div><h4 id="modifier--upline-11"><a class="doc-anchor" href="#modifier--upline-11">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h3 id="no-flags-14"><a class="doc-anchor" href="#no-flags-14">§</a>No flags</h3><h3 id="event-auto"><a class="doc-anchor" href="#event-auto">§</a>event auto</h3>
+<p>Performs the <code>fetch</code> automatically on page load:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:fetch; |/url|auto| &gt;&gt; &lt;div&gt;loading...&lt;/div&gt; :}</code></pre></div><h3 id="event-none"><a class="doc-anchor" href="#event-none">§</a>event none</h3>
+<p>No event, waiting for you to provide a custom event to perform the <code>fetch</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:fetch; |/url|none| &gt;&gt; ... :}</code></pre></div>
+<p>Do not confuse <code>none</code> with leaving the parameter empty, leaving it empty would be <code>auto</code> by default.</p>
+<h3 id="event-click"><a class="doc-anchor" href="#event-click">§</a>event click</h3>
+<p>Perform the <code>fetch</code> on click:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:fetch; |/url|click| &gt;&gt; &lt;button type=&quot;button&quot;&gt;Click Me!&lt;/button&gt; :}</code></pre></div><h3 id="event-visible"><a class="doc-anchor" href="#event-visible">§</a>event visible</h3>
+<p>Performs the <code>fetch</code> when the containing element is visible, it can be useful to display content in modals, images or on the scroll:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:fetch; |/url|visible| &gt;&gt; &lt;div&gt;loading...&lt;/div&gt; :}</code></pre></div><h3 id="event-form"><a class="doc-anchor" href="#event-form">§</a>event form</h3>
+<p>The <code>form</code> event generates a form:</p>
+<div class="example-wrap"><pre class="language-text"><code>{:fetch; |/url|form| &gt;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;paramValue&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;Send&lt;/button&gt;
+:}</code></pre></div>
+<p>The above will automatically generate HTML similar to this:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;form class=&quot;neutral-fetch-form&quot; method=&quot;POST&quot; action=&quot;/url&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;paramValue&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;Send&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+<p>And the form will be sent with <code>fetch</code> formatting the parameters automatically, even if file uploads are included.</p>
+<h3 id="js-variables"><a class="doc-anchor" href="#js-variables">§</a>JS Variables</h3><div class="example-wrap"><pre class="language-text"><code>&lt;script&gt;
+    var neutral_submit_loading = &#39;...&#39;;
+    var neutral_submit_timeout = 30000;
+    var neutral_submit_error = &#39;{:trans; Form ERROR! :}&#39;;
+    var neutral_submit_error_delay = 3500;
+    var neutral_submit_delay = 250;
+&lt;/script&gt;</code></pre></div><h3 id="neutraljs"><a class="doc-anchor" href="#neutraljs">§</a>neutral.js</h3>
+<p>By default when you first call <code>fetch</code> the necessary JavaScript script is automatically added to the end of <code>body</code>.</p>
+<p>This behavior can be changed in <code>schema</code> with <code>disable_js</code> to <code>true</code> for performance reasons:</p>
+<div class="example-wrap"><pre class="language-text"><code>{
+    &quot;config&quot;: {
+        &quot;disable_js&quot;: true
+    }
+}</code></pre></div>
+<p>In this case you will have to manually add to your template at the end of <code>body</code> the script:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;html&gt;
+    &lt;body&gt;
+        ...
+        &lt;script src=&quot;neutral.min.js&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<p>You can download it here: <a href="https://gitlab.com/neutralfw/neutralts/-/tree/master/js">neutral.min.js</a></p>
+<hr />
+<h2 id="filled--"><a class="doc-anchor" href="#filled--">§</a>{:filled; … :}</h2>
+<p>Output code  if a variable is filled (non-zero length).</p>
+<div class="example-wrap"><pre class="language-html"><code>{:filled; variable &gt;&gt; code :}
+
+{:filled; varname &gt;&gt; this shown if varname is filled :}</code></pre></div><h3 id="modifiers-19"><a class="doc-anchor" href="#modifiers-19">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^filled; varname &gt;&gt; ... :}
+{:!filled; varname &gt;&gt; ... :}
+{:+filled; varname &gt;&gt; ... :}</code></pre></div>
+<p>For more details about the “+” modifier see “modifiers”.</p>
+<h4 id="modifier--not-10"><a class="doc-anchor" href="#modifier--not-10">§</a>Modifier ! (not):</h4><div class="example-wrap"><pre class="language-html"><code>{:!filled; varname &gt;&gt; this shown if varname is not filled :}</code></pre></div><h3 id="no-flags-15"><a class="doc-anchor" href="#no-flags-15">§</a>No flags</h3><h3 id="examples-7"><a class="doc-anchor" href="#examples-7">§</a>Examples</h3><div class="example-wrap"><pre class="language-html"><code>{:filled; true          &gt;&gt; Shown! :}
+{:filled; false         &gt;&gt; Shown! :}
+{:filled; hello         &gt;&gt; Shown! :}
+{:filled; zero          &gt;&gt; Shown! :}
+{:filled; one           &gt;&gt; Shown! :}
+{:filled; spaces        &gt;&gt; Shown! :}
+{:filled; empty         &gt;&gt; Not shown :}
+{:filled; null          &gt;&gt; Not shown :}
+{:filled; undef         &gt;&gt; Not shown :}
+{:filled; undefarr      &gt;&gt; Not shown :}
+{:filled; emptyarr      &gt;&gt; Not shown :}
+{:filled; array         &gt;&gt; Shown! :}
+{:filled; array-&gt;true   &gt;&gt; Shown! :}
+{:filled; array-&gt;false  &gt;&gt; Shown! :}
+{:filled; array-&gt;hello  &gt;&gt; Shown! :}
+{:filled; array-&gt;zero   &gt;&gt; Shown! :}
+{:filled; array-&gt;one    &gt;&gt; Shown! :}
+{:filled; array-&gt;spaces &gt;&gt; Shown! :}
+{:filled; array-&gt;empty  &gt;&gt; Not shown :}
+{:filled; array-&gt;null   &gt;&gt; Not shown :}
+{:filled; array-&gt;undef  &gt;&gt; Not shown :}</code></pre></div>
+<p>Assumes data:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;data&quot;: {
+        &quot;true&quot;: true,
+        &quot;false&quot;: false,
+        &quot;hello&quot;: &quot;hello&quot;,
+        &quot;zero&quot;: &quot;0&quot;,
+        &quot;one&quot;: &quot;1&quot;,
+        &quot;spaces&quot;: &quot;  &quot;,
+        &quot;empty&quot;: &quot;&quot;,
+        &quot;null&quot;: null,
+        &quot;emptyarr&quot;: [],
+        &quot;array&quot;: {
+            &quot;true&quot;: true,
+            &quot;false&quot;: false,
+            &quot;hello&quot;: &quot;hello&quot;,
+            &quot;zero&quot;: &quot;0&quot;,
+            &quot;one&quot;: &quot;1&quot;,
+            &quot;spaces&quot;: &quot;  &quot;,
+            &quot;empty&quot;: &quot;&quot;,
+            &quot;null&quot;: null
+        }
+    }
+}</code></pre></div>
+<hr />
+<h2 id="flg--"><a class="doc-anchor" href="#flg--">§</a>{:flg; … :}</h2>
+<p>Set a flag for a bif.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:flg; flag1 flag2 ... :}</code></pre></div>
+<p>It must be included in the parameters of a bif, by itself it has no utility.</p>
+<p>Example:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; {:flg; require :} &gt;&gt; ... :}</code></pre></div>
+<hr />
+<h2 id="for--"><a class="doc-anchor" href="#for--">§</a>{:for; … :}</h2>
+<p>For loop.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:for; varname from..to &gt;&gt; code :}
+
+{:for; var 1..10 &gt;&gt;
+    {:;var:}
+:}</code></pre></div><h3 id="modifiers-20"><a class="doc-anchor" href="#modifiers-20">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^for; ... :}</code></pre></div><h3 id="no-flags-16"><a class="doc-anchor" href="#no-flags-16">§</a>No flags</h3><h3 id="examples-8"><a class="doc-anchor" href="#examples-8">§</a>Examples</h3><div class="example-wrap"><pre class="language-html"><code>{:for; n 1..10 &gt;&gt;
+    {:;n:}
+:}</code></pre></div>
+<p>Reverse:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:for; n 10..1 &gt;&gt;
+    {:;n:}
+:}</code></pre></div>
+<hr />
+<h2 id="hash--"><a class="doc-anchor" href="#hash--">§</a>{:hash; … :}</h2>
+<p>Output a hash value (md5), a random value by default.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:hash;  :}
+{:hash; text :}</code></pre></div><h3 id="modifiers-21"><a class="doc-anchor" href="#modifiers-21">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^hash; ... :}</code></pre></div><h3 id="no-flags-17"><a class="doc-anchor" href="#no-flags-17">§</a>No flags</h3><h3 id="examples-9"><a class="doc-anchor" href="#examples-9">§</a>Examples</h3><div class="example-wrap"><pre class="language-html"><code>{:hash; :}
+{:hash; :}
+{:hash; Hello World :}
+{:hash; Hello World :}</code></pre></div>
+<p>Output</p>
+<div class="example-wrap"><pre class="language-html"><code>c341544b05307511ee7fd301a6842c9c
+d981eb7814774d5b4a795484cee3005e
+b10a8db164e0754105b7a99be72e3fe5
+b10a8db164e0754105b7a99be72e3fe5</code></pre></div>
+<hr />
+<h2 id="include--"><a class="doc-anchor" href="#include--">§</a>{:include; … :}</h2>
+<p>Include and usually parse any file, usually a template.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; filename :}
+
+{:include; template.ntpl :}</code></pre></div><h3 id="modifiers-22"><a class="doc-anchor" href="#modifiers-22">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:!include; ... :}
+{:^include; ... :}</code></pre></div><h4 id="modifier--not-11"><a class="doc-anchor" href="#modifier--not-11">§</a>Modifier: ! (not)</h4>
+<p>The “not” modifier prevents the file from being reparse if it has already been parsed.</p>
+<p>Assuming that the content of file.ntpl is simply the word “Hello”:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; file.ntpl :}
+...
+{:include; file.ntpl :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>Hello
+Hello</code></pre></div>
+<p>With “not”:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; file.ntpl :}
+...
+{:!include; file.ntpl :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>Hello</code></pre></div>
+<p>The following produces the same result as above:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:!include; file.ntpl :}
+...
+{:!include; file.ntpl :}</code></pre></div>
+<p>Or can the parse be forced:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:!include; file.ntpl :}
+...
+{:include; file.ntpl :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>Hello
+Hello</code></pre></div><h3 id="flags-3"><a class="doc-anchor" href="#flags-3">§</a>Flags</h3><div class="example-wrap"><pre class="language-html"><code>{:include; {:flg; require noparse safe :} &gt;&gt; ... :}</code></pre></div><h4 id="flag-require"><a class="doc-anchor" href="#flag-require">§</a>Flag: require</h4>
+<p>By default, no error will occur if the file to include does not exist, unless the “require” flag is set.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; {:flg; require :} &gt;&gt; file.ntpl :}</code></pre></div><h4 id="flag-noparse-1"><a class="doc-anchor" href="#flag-noparse-1">§</a>Flag: noparse</h4>
+<p>The “noparse” flag prevents the file to be included from being parsed.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; {:flg; noparse :} &gt;&gt; file.css :}</code></pre></div><h4 id="flag-safe-1"><a class="doc-anchor" href="#flag-safe-1">§</a>Flag: safe</h4>
+<p>Encoding all, safe implies noparse.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; {:flg; safe :} &gt;&gt; file.txt :}</code></pre></div><h3 id="dynamic-evaluation-1"><a class="doc-anchor" href="#dynamic-evaluation-1">§</a>Dynamic evaluation</h3>
+<p>The following will produce an error:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; {:;varname:} :}</code></pre></div>
+<p>For safety reasons, when evaluating the complete variable it is necessary to use “allow”:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; {:allow; allowed-words-list &gt;&gt; {:;varname:} :} :}
+{:include; {:!allow; traversal &gt;&gt; {:;varname:} :} :}</code></pre></div>
+<p>In any case, you must use “allow” on any variable that comes from the context. See the “allow” and “declare” bifs for more details.</p>
+<h3 id="relative-to-current-file-path"><a class="doc-anchor" href="#relative-to-current-file-path">§</a>Relative to current file path</h3>
+<p>When creating a web application, we’ll know where the files are located, so we can do:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; /path/to/tpl/template.ntpl :}</code></pre></div>
+<p>We can use relative paths to the currently included file with the “#” symbol:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; #/snippets.ntpl :}</code></pre></div>
+<p>When using “#” inside /path/to/tpl/template.ntpl, it becomes:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:include; /path/to/tpl/snippets.ntpl :}</code></pre></div>
+<p>In this way, we can create utilities without knowing the directory structure.</p>
+<hr />
+<h2 id="join--"><a class="doc-anchor" href="#join--">§</a>{:join; … :}</h2>
+<p>Output join array elements with a string.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:join; /array/literal/bool/ :}
+{:join; /array/separator/keys/ :}
+{:join; /array/separator/ :}</code></pre></div>
+<ul>
+<li>array: an array</li>
+<li>separator: string as a separator</li>
+<li>keys: optional boolean for using keys instead of values, default false, values</li>
+</ul>
+<p>Any delimiter can be used:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:join; ~array~separator~ :}
+{:join; #array#separator# :}
+{:join; |array|separator| :}
+{:join; XarrayXseparatorX :}</code></pre></div><h3 id="modifiers-23"><a class="doc-anchor" href="#modifiers-23">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-text"><code>{:^join; ... :}</code></pre></div><h4 id="modifier--upline-12"><a class="doc-anchor" href="#modifier--upline-12">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h3 id="no-flags-18"><a class="doc-anchor" href="#no-flags-18">§</a>No flags</h3><h3 id="example-1"><a class="doc-anchor" href="#example-1">§</a>Example</h3><div class="example-wrap"><pre class="language-text"><code>&lt;li&gt;{:join; |array|&lt;/li&gt;&lt;li&gt;| :}&lt;/li&gt;</code></pre></div>
+<hr />
+<h2 id="locale--"><a class="doc-anchor" href="#locale--">§</a>{:locale; … :}</h2>
+<p>Includes a language json file:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:locale; filename :}
+
+{:locale; file.json :}</code></pre></div>
+<p>The language files must have a structure similar to this one:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;trans&quot;: {
+        &quot;es&quot;: {
+            &quot;Hello&quot;: &quot;Hola&quot;,
+            &quot;ref:greeting&quot;: &quot;Hola&quot;,
+        },
+        &quot;es-ES&quot;: {
+            &quot;Hello&quot;: &quot;Hola&quot;,
+            &quot;ref:greeting&quot;: &quot;Hola&quot;,
+        }
+    }
+}</code></pre></div>
+<p>A “trans” key and then the key for each language, any other key will produce an error or be ignored.</p>
+<h3 id="modifiers-24"><a class="doc-anchor" href="#modifiers-24">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:!locale; ... :}
+{:^locale; ... :}</code></pre></div><h4 id="modifier--not-12"><a class="doc-anchor" href="#modifier--not-12">§</a>Modifier: ! (not)</h4>
+<p>The “not” modifier prevents the file from being reload if it has already been parsed. Generally, language files should only be included once, it will increase performance if “not” is used:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:!locale; file.json :}</code></pre></div><h3 id="flags-4"><a class="doc-anchor" href="#flags-4">§</a>Flags</h3><div class="example-wrap"><pre class="language-html"><code>{:locale; {:flg; require noparse :} &gt;&gt; ... :}</code></pre></div><h4 id="flag-require-1"><a class="doc-anchor" href="#flag-require-1">§</a>Flag: require</h4>
+<p>By default, no error will occur if the file to locale does not exist, unless the “require” flag is set.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:locale; {:flg; require :} &gt;&gt; file.json :}</code></pre></div><h4 id="flag-noparse-2"><a class="doc-anchor" href="#flag-noparse-2">§</a>Flag: noparse</h4>
+<p>The “noparse” flag prevents the file to be included from being parsed.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:locale; {:flg; noparse :} &gt;&gt; file.json :}</code></pre></div><h3 id="return-value"><a class="doc-anchor" href="#return-value">§</a>Return value</h3>
+<p>“locale” show no output but returns “{:;:}” (unprintable) if successful, so this is possible:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:locale; file.{:lang;:}.json :}
+{:else; file.en.json :}</code></pre></div><h3 id="dynamic-evaluation-2"><a class="doc-anchor" href="#dynamic-evaluation-2">§</a>Dynamic evaluation</h3>
+<p>The following will produce an error:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:locale; {:;varname:} :}</code></pre></div>
+<p>For safety reasons, when evaluating the complete variable it is necessary to use “allow”:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:locale; {:allow; allowed-words-list &gt;&gt; {:;varname:} :} :}
+{:locale; {:!allow; traversal &gt;&gt; {:;varname:} :} :}</code></pre></div>
+<p>In any case, you must use “allow” on any variable that comes from the context. See the “allow” and “declare” bifs for more details.</p>
+<h3 id="translation-evaluation"><a class="doc-anchor" href="#translation-evaluation">§</a>Translation evaluation</h3>
+<p>Translations may contain variables:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;trans&quot;: {
+        &quot;es&quot;: {
+            &quot;Welcome to {:;web-site-name:}&quot;: &quot;Bienvenido a {:;web-site-name:}&quot;
+        }
+    }
+}</code></pre></div>
+<p>Variables are resolved at the time the file is included.</p>
+<p>(*) Translations included in the “schema” are not evaluated, only those loaded with “locale”.</p>
+<h3 id="relative-to-current-file-path-1"><a class="doc-anchor" href="#relative-to-current-file-path-1">§</a>Relative to current file path</h3>
+<p>We can use relative paths to the currently localed file with the “#” symbol:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:locale; #/file.json :}</code></pre></div>
+<p>It will be relative to the file loaded with “include”:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:*
+    file: /path/to/tpl/snippets.ntpl
+    Here #/file.json is: /path/to/tpl/file.json
+*:}
+
+{:locale; #/file.json :}</code></pre></div>
+<hr />
+<h2 id="moveto--"><a class="doc-anchor" href="#moveto--">§</a>{:moveto; … :}</h2>
+<p>Move the code to the specified tag, no output. The code is parsed before moving.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:moveto; tagname &gt;&gt; code :}
+
+{:moveto; &lt;tag &gt;&gt; ... :}
+{:moveto; &lt;/tag &gt;&gt; ... :}</code></pre></div>
+<p>Moves to the inside of the tag, at the beginning or at the end depending on whether the slash is included.</p>
+<p>Note that it is designed to move libraries, js, css, etc, not to arbitrarily move code to any tag, if it moves to a “div” it will do it to the first one it finds.</p>
+<p>Custom tags can be created to mark the places where certain code should be moved.</p>
+<h3 id="modifiers-25"><a class="doc-anchor" href="#modifiers-25">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^moveto; ... :}</code></pre></div><h3 id="no-flags-19"><a class="doc-anchor" href="#no-flags-19">§</a>No flags</h3><h3 id="usage-3"><a class="doc-anchor" href="#usage-3">§</a>Usage</h3>
+<p>An ID is generated with the code to be moved, so that the same code is only moved once. The following will only move once even if it is quoted several times throughout the app:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:moveto; &lt;/head &gt;&gt; &lt;script src=&quot;jquery.min.js&quot;&gt;&lt;/script&gt; :}
+{:moveto; &lt;/head &gt;&gt; &lt;script src=&quot;jquery.min.js&quot;&gt;&lt;/script&gt; :}</code></pre></div>
+<p>Since this is the desired behavior, so that the code is always the same, it is better to create snippets:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; include-jquery &gt;&gt;
+    &lt;script src=&quot;jquery.min.js&quot;&gt;&lt;/script&gt;
+:}
+
+{:moveto; &lt;/head &gt;&gt; {:snippet; include-jquery :} :}</code></pre></div>
+<p>Or:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; include-jquery &gt;&gt;
+    {:moveto; &lt;/head &gt;&gt; &lt;script src=&quot;jquery.min.js&quot;&gt;&lt;/script&gt; :}
+:}
+
+{:snippet; include-jquery :}</code></pre></div>
+<p>Example:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;script src=&quot;jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+
+{:moveto; &lt;/head &gt;&gt; &lt;meta name=&quot;meta&quot; content=&quot;anything&quot;&gt; :}
+{:moveto; &lt;body  &gt;&gt; &lt;script&gt; // script 1 &lt;/script&gt; :} {:* move to start body *:}
+{:moveto; &lt;/body &gt;&gt; &lt;script&gt; // script 2 &lt;/script&gt; :} {:* move to end body *:}</code></pre></div>
+<p>Result:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;meta name=&quot;meta&quot; content=&quot;anything&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;script&gt; // script 1 &lt;/script&gt;
+        &lt;script src=&quot;jquery.min.js&quot;&gt;&lt;/script&gt;
+        &lt;script&gt; // script 2 &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+<hr />
+<h2 id="neutral--"><a class="doc-anchor" href="#neutral--">§</a>{:neutral; … :}</h2>
+<p>Neutral returns to itself, no parse.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:neutral; hello &gt;&gt; {:;world:} :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:neutral; hello &gt;&gt; {:;world:} :}</code></pre></div><h3 id="modifiers-26"><a class="doc-anchor" href="#modifiers-26">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^neutral; ... :}</code></pre></div><h3 id="no-flags-20"><a class="doc-anchor" href="#no-flags-20">§</a>No flags</h3>
+<hr />
+<h2 id="param--"><a class="doc-anchor" href="#param--">§</a>{:param; … :}</h2>
+<p>Set custom parameters, no output in set, output value in get.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:param; name &gt;&gt; value :} {:* set *:}
+{:param; name :}          {:* get *:}</code></pre></div><h3 id="modifiers-27"><a class="doc-anchor" href="#modifiers-27">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^param; ... :}</code></pre></div><h3 id="no-flags-21"><a class="doc-anchor" href="#no-flags-21">§</a>No flags</h3><h3 id="usage-4"><a class="doc-anchor" href="#usage-4">§</a>Usage</h3>
+<p>The parameters must necessarily be defined within and at the beginning of the bif “code”.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    {:param; name1 &gt;&gt; value :}
+    {:param; name2 &gt;&gt; value :}
+    ...
+:}</code></pre></div>
+<p>The parameters have block scope, will be inherited and recover their value:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    {:param; name &gt;&gt; 1 :}
+    {:code;
+        {:param; name &gt;&gt; 2 :}
+    :}
+    {:* &quot;name&quot; will recover their value *:}
+:}</code></pre></div>
+<p>Example of passing arguments to template:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    {:param; option &gt;&gt; value :}
+    {:include; foo.tpl :}
+:}</code></pre></div>
+<p>Example of passing arguments to snippet:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:code;
+    {:param; option &gt;&gt; blue :}
+    {:snippet; foo :}
+:}</code></pre></div>
+<p>The snippet may be:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; foo &gt;&gt;
+    The option is: {:param; option :}
+:}</code></pre></div>
+<hr />
+<h2 id="rand--"><a class="doc-anchor" href="#rand--">§</a>{:rand; … :}</h2>
+<p>Output rand number.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:rand; :}
+{:rand; 1..10 :}</code></pre></div><h3 id="modifiers-28"><a class="doc-anchor" href="#modifiers-28">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^rand; ... :}</code></pre></div><h3 id="no-flags-22"><a class="doc-anchor" href="#no-flags-22">§</a>No flags</h3><h3 id="examples-10"><a class="doc-anchor" href="#examples-10">§</a>Examples</h3><div class="example-wrap"><pre class="language-html"><code>{:rand; :}
+{:rand; 1..10 :}
+{:rand; 100..999 :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>688755410
+3
+569</code></pre></div>
+<hr />
+<h2 id="redirect--"><a class="doc-anchor" href="#redirect--">§</a>{:redirect; … :}</h2>
+<p>Terminate the current template with redirect status code or Javascript redirect.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:redirect; 301 &gt;&gt; url :}
+{:redirect; js:reload:top :}</code></pre></div>
+<p>It is important to know that the <strong>status codes must be managed by the application</strong>, this bif is limited to set them and to terminate the template. In the case of JS redirections, a status code “200 OK” is set and does not need to be managed in the app.</p>
+<h3 id="modifiers-29"><a class="doc-anchor" href="#modifiers-29">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^redirect; ... :}</code></pre></div><h3 id="no-flags-23"><a class="doc-anchor" href="#no-flags-23">§</a>No flags</h3><h3 id="redirect-http"><a class="doc-anchor" href="#redirect-http">§</a>Redirect HTTP</h3>
+<p>The possible values for HTTP redirects are 301, 302, 303, 307 and 308 any other will generate an error. Redirect codes:</p>
+<div class="example-wrap"><pre class="language-html"><code>{
+    &quot;301&quot;: &quot;Moved Permanently&quot;,
+    &quot;302&quot;: &quot;Found&quot;,
+    &quot;303&quot;: &quot;See Other&quot;,
+    &quot;307&quot;: &quot;Temporary Redirect&quot;,
+    &quot;308&quot;: &quot;Permanent Redirect&quot;
+}
+
+{:redirect; 301 &gt;&gt; http://example.com :}
+{:redirect; 302 &gt;&gt; http://example.com :}
+{:redirect; 303 &gt;&gt; http://example.com :}
+{:redirect; 307 &gt;&gt; http://example.com :}
+{:redirect; 308 &gt;&gt; http://example.com :}</code></pre></div>
+<p>Custom redirections can also be created with the “exit” bif.</p>
+<h3 id="redirect-javascript"><a class="doc-anchor" href="#redirect-javascript">§</a>Redirect Javascript</h3>
+<p>In this case it is not necessary to do anything in the app.</p>
+<p>js:reload:top reloads the current page in the top window, no URL required:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:redirect; js:reload:top :}</code></pre></div>
+<p>js:reload:self reloads the current page in the current window, no URL required:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:redirect; js:reload:self :}</code></pre></div>
+<p>js:redirect:top redirects the page (URL) in the top window, requires the destination URL:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:redirect; js:redirect;top &gt;&gt; /home/ :}</code></pre></div>
+<p>js:redirect:self redirects the page (URL) in the current window, requires the destination URL:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:redirect; js:redirect;self &gt;&gt; /home/ :}</code></pre></div><h3 id="manage-in-the-app-native-rust-1"><a class="doc-anchor" href="#manage-in-the-app-native-rust-1">§</a>Manage in the app (native Rust)</h3>
+<p>If you use the bif “exit” or “redirect” it is necessary to manage the status codes in the application, it will depend on the environment or framework you are using, it could be something like this:</p>
+<div class="example-wrap"><pre class="language-text"><code>let template = Template::from_file_value(&quot;file.ntpl&quot;, schema).unwrap();
+let content = template.render();
+
+// e.g.: 301
+let status_code = template.get_status_code();
+
+// e.g.: Moved Permanently
+let status_text = template.get_status_text();
+
+// e.g.: https://example.com
+let status_param = template.get_status_param();
+
+// act accordingly at this point</code></pre></div>
+<p>It may be the case that the template contains a syntax error, in which case set the status code 500 and in the parameter the reason, by default the content is blank.</p>
+<h3 id="manage-in-the-app-others-1"><a class="doc-anchor" href="#manage-in-the-app-others-1">§</a>Manage in the app (others)</h3>
+<p>Each programming language can implement it in a different way, see the IPC client of each language.</p>
+<p>There will usually be an equivalent function with the same name as those in Rust.</p>
+<hr />
+<h2 id="replace--"><a class="doc-anchor" href="#replace--">§</a>{:replace; … :}</h2>
+<p>Replace all occurrences in code part.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:replace; /from/to/ &gt;&gt; code :}</code></pre></div>
+<p>Any delimiter can be used:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:replace; ~from~to~ &gt;&gt; ... :}
+{:replace; ~\~/~ &gt;&gt; ... :}
+{:replace; #from#to# &gt;&gt; ... :}
+{:replace; |from|to| &gt;&gt; ... :}
+{:replace; XfromXtoX &gt;&gt; ... :}
+...</code></pre></div><h3 id="modifiers-30"><a class="doc-anchor" href="#modifiers-30">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^replace; ... :}</code></pre></div><h3 id="no-flags-24"><a class="doc-anchor" href="#no-flags-24">§</a>No flags</h3><h3 id="example-2"><a class="doc-anchor" href="#example-2">§</a>Example</h3><div class="example-wrap"><pre class="language-html"><code>{:replace; / /_/ &gt;&gt; Hello World :}</code></pre></div>
+<p>Output</p>
+<div class="example-wrap"><pre class="language-html"><code>Hello_World</code></pre></div>
+<hr />
+<h2 id="same--"><a class="doc-anchor" href="#same--">§</a>{:same; … :}</h2>
+<p>Output code if same.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:same; /literal/literal/ &gt;&gt; code :}
+
+{:same; /{:;varname:}/42/ &gt;&gt; ... :}</code></pre></div>
+<p>Any delimiter can be used:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:same; ~a~b~ &gt;&gt; ... :}
+{:same; #a#b# &gt;&gt; ... :}
+{:same; |a|b| &gt;&gt; ... :}
+{:same; XaXbX &gt;&gt; ... :}
+...</code></pre></div>
+<hr />
+<h2 id="snippet--"><a class="doc-anchor" href="#snippet--">§</a>{:snippet; … :}</h2>
+<p>Output or set snippet.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; name &gt;&gt; ... :} {:* set  *:}
+{:snippet; name :}        {:* play *:}</code></pre></div>
+<p>You can use the alias “snip”, this is the same:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snip; name &gt;&gt; ... :} {:* set  *:}
+{:snip; name :}        {:* play *:}</code></pre></div>
+<p>Note that snippet, although they can be called anywhere, <strong>must be defined in a file whose name contains the word “snippet”.</strong> An error will occur if an attempt is made to define it elsewhere.</p>
+<h3 id="modifiers-31"><a class="doc-anchor" href="#modifiers-31">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-html"><code>{:^snippet; ... :}</code></pre></div><h3 id="flags-5"><a class="doc-anchor" href="#flags-5">§</a>Flags</h3><div class="example-wrap"><pre class="language-html"><code>{:snippet; {:flg; static :} ... &gt;&gt; ... :}</code></pre></div><h4 id="flag-static"><a class="doc-anchor" href="#flag-static">§</a>Flag: static</h4>
+<p>By default the content of the snippet is parsed when called, with “static” it is parsed when set.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; {:flg; static :} snippet-name &gt;&gt;
+    {:;varname:}
+:}</code></pre></div>
+<p>Therefore, it only works on set.</p>
+<h3 id="usage-5"><a class="doc-anchor" href="#usage-5">§</a>Usage</h3>
+<p>The snippet is something like a function, parts of code that you can refer and can contain anything.</p>
+<p>Set snippet, no output:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; snippet-name &gt;&gt;
+    Hello World
+:}</code></pre></div>
+<p>Play snippet;</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; snippet-name :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>Hello World</code></pre></div>
+<hr />
+<h2 id="sum--"><a class="doc-anchor" href="#sum--">§</a>{:sum; … :}</h2>
+<p>Output the sum.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:sum; /literal/literal/ :}</code></pre></div>
+<p>Any delimiter can be used:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:sum; ~a~b~ :}
+{:sum; #a#b# :}
+{:sum; |a|b| :}
+{:sum; XaXbX :}
+...</code></pre></div><h3 id="modifiers-32"><a class="doc-anchor" href="#modifiers-32">§</a>Modifiers:</h3><div class="example-wrap"><pre class="language-text"><code>{:^sum; ... :}</code></pre></div><h4 id="modifier--upline-13"><a class="doc-anchor" href="#modifier--upline-13">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces, (See “unprintable” for examples.)</p>
+<h3 id="no-flags-25"><a class="doc-anchor" href="#no-flags-25">§</a>No flags</h3>
+<hr />
+<h2 id="trans--"><a class="doc-anchor" href="#trans--">§</a>{:trans; … :}</h2>
+<p>Translate a string.</p>
+<div class="example-wrap"><pre class="language-html"><code>{:trans; String to translate :}</code></pre></div><h3 id="modifiers-33"><a class="doc-anchor" href="#modifiers-33">§</a>Modifiers</h3><div class="example-wrap"><pre class="language-html"><code>{:^trans; ... :}
+{:!trans; ... :}
+{:^!trans; ... :}</code></pre></div><h4 id="modifier--upline-14"><a class="doc-anchor" href="#modifier--upline-14">§</a>Modifier: ^ (upline)</h4>
+<p>Eliminates previous whitespaces</p>
+<p>Assuming that the translation of Hello is Hello:</p>
+<div class="example-wrap"><pre class="language-texplain"><code>&lt;div&gt;&lt;/div&gt;
+
+{:trans; Hello :}
+
+&lt;div&gt;&lt;/div&gt;
+
+{:^trans; Hello :}</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-texplain"><code>&lt;div&gt;&lt;/div&gt;
+
+Hello
+
+&lt;div&gt;&lt;/div&gt;Hello</code></pre></div><h4 id="modifier--not-13"><a class="doc-anchor" href="#modifier--not-13">§</a>Modifier: ! (not)</h4>
+<p>By default the same string is output if there is no translation, to output an empty string use the modifier “not”. Assuming there is no translation for “Hello”.</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;{:trans; Hello :}&lt;/div&gt;
+&lt;div&gt;{:!trans; Hello :}&lt;/div&gt;
+&lt;div&gt;{:!trans; Hello :}{:else;
+    There is no translation for &quot;Hello&quot;.
+:}&lt;/div&gt;</code></pre></div>
+<p>Output:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;div&gt;Hello&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;There is no translation for &quot;Hello&quot;.&lt;/div&gt;</code></pre></div><h3 id="no-flags-26"><a class="doc-anchor" href="#no-flags-26">§</a>No flags</h3><h3 id="references"><a class="doc-anchor" href="#references">§</a>References</h3>
+<p>An APP can be created thinking that in the future it can be translated, we use in all the “trans” outputs;</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;ul&gt;
+    &lt;li&gt;{:trans; File :}&lt;/li&gt;
+    &lt;li&gt;{:trans; Edit :}&lt;/li&gt;
+&lt;/ul&gt;</code></pre></div>
+<p>Simply add the translation without modifying the code.</p>
+<p>We can also add a translation from the beginning and use the same or another strategy as references:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;ul&gt;
+    &lt;li&gt;{:trans; ref:menu:file :}&lt;/li&gt;
+    &lt;li&gt;{:trans; ref:menu:edit :}&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;{:trans; code:1002 :}&lt;/li&gt;
+    &lt;li&gt;{:trans; code:1003 :}&lt;/li&gt;
+&lt;/ul&gt;</code></pre></div>
+<p>In this case it will be necessary to make sure that all references have a translation, or use “not” and “else”:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;li&gt;{:!trans; ref:menu:edit :}{:else; Edit :}&lt;/li&gt;</code></pre></div>
+<p>The “schema” takes care of the translation by means of the “locale” key of the scheme, the current language is defined with the “current” key:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;inherit&quot;: {
+        &quot;locale&quot;: {
+            &quot;current&quot;: &quot;en&quot;
+            &quot;trans&quot;: {
+                &quot;en&quot;: {
+                    &quot;Hello&quot;: &quot;Hello&quot;,
+                    &quot;ref:greeting&quot;: &quot;Hello&quot;
+                },
+                &quot;es&quot;: {
+                    &quot;Hello&quot;: &quot;Hola&quot;,
+                    &quot;ref:greeting&quot;: &quot;Hola&quot;
+                },
+                &quot;de&quot;: {
+                    &quot;Hello&quot;: &quot;Hallo&quot;,
+                    &quot;ref:greeting&quot;: &quot;Hallo&quot;
+                },
+                &quot;fr&quot;: {
+                    &quot;Hello&quot;: &quot;Bonjour&quot;,
+                    &quot;ref:greeting&quot;: &quot;Bonjour&quot;
+                }
+            }
+        }
+    }
+}</code></pre></div>
+<p>For more details see “schema” and “locale” bif.</p>
+<h3 id="non-text-translation"><a class="doc-anchor" href="#non-text-translation">§</a>Non-text translation</h3>
+<p>The above strategies will work well for translating short text strings, but not for long text or even images.</p>
+<p>We can use references to translate images:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;img src=&quot;/images/cover-{:!trans; ref:lang :}{:else; english :}.jpg&quot; /&gt;</code></pre></div>
+<p>For which we will need images with the appropriate file name:</p>
+<div class="example-wrap"><pre class="language-html"><code>cover-english.jpg
+cover-spanish.jpg
+cover-french.jpg</code></pre></div>
+<p>With “else” we have set the default image, in case there is no translated image. Alternatively, we can do the following:</p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;img src=&quot;/images/cover-{:!trans; ref:lang :}.jpg&quot; /&gt;
+
+cover-.jpg          // This is the default image
+cover-english.jpg
+cover-spanish.jpg
+cover-french.jpg</code></pre></div>
+<p>And the corresponding translations in “locale”:</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;locale&quot;: {
+        &quot;trans&quot;: {
+            &quot;en&quot;: {
+                &quot;ref:lang&quot;: &quot;english&quot;
+            },
+            &quot;en-us&quot;: {
+                &quot;ref:lang&quot;: &quot;english&quot;
+            },
+            &quot;es&quot;: {
+                &quot;ref:lang&quot;: &quot;spanish&quot;
+            },
+            &quot;es-es&quot;: {
+                &quot;ref:lang&quot;: &quot;spanish&quot;
+            },
+            &quot;fr&quot;: {
+                &quot;ref:lang&quot;: &quot;french&quot;
+            }
+        }
+    }
+}</code></pre></div>
+<p>This same system will be useful for translating long texts using the same defined references:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; terms-conditions-{:!trans; ref:lang :}{:else; english :} :}
+{:include; terms-conditions-{:!trans; ref:lang :}{:else; english :}.ntpl :}</code></pre></div>
+<p>Another strategy for translating images, long text and other content is the use of the “lang” bif which outputs the current language, first we define the snippet needed for each language, which can contain text, images, html, …:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; contents-for-en &gt;&gt;
+    ....
+:}
+
+{:snippet; contents-for-es &gt;&gt;
+    ....
+:}
+
+{:snippet; contents-for-fr &gt;&gt;
+    ....
+:}</code></pre></div>
+<p>Then:</p>
+<div class="example-wrap"><pre class="language-html"><code>{:snippet; contents-for-{:lang;:} :}{:else;
+    {:snippet; contents-for-en :}
+:}</code></pre></div>
+<p>A snippet that does not exist or is empty is not an error, but “else” detects it.</p>
+<hr />
+</div></details></section></div></main></body></html>
