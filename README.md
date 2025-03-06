@@ -14,7 +14,7 @@ In this simple PWA example, all three use exactly the same templates.
 
 (*) For non-Rust requires an IPC server that you can download from the [IPC repository](https://gitlab.com/neutralfw/ipc)
 
-The documentation of the **web template** engine is here: [template engine doc](https://docs.rs/neutralts/latest/neutralts/doc/index.html) and **Rust** documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
+The documentation of the **web template** engine is here: [template engine doc](https://franbar1966.github.io/neutralts/docs/neutralts/) and **Rust** documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
 
 Rust
 ----
@@ -43,7 +43,7 @@ let content = template.render();
 Safe
 ----
 
-Neutral TS template engine is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://docs.rs/neutralts/latest/neutralts/doc/index.html#safety).
+Neutral TS template engine is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://franbar1966.github.io/neutralts/docs/neutralts/#safety).
 
 Template Engine - Features
 --------------------------
@@ -124,7 +124,7 @@ Now you can use:
 {:trans; Hello :}
 ```
 
-Actually you can always use "trans" because if there is no translation it returns the text.  See: [locale](https://docs.rs/neutralts/latest/neutralts/doc/index.html#locale--) and [trans](https://docs.rs/neutralts/latest/neutralts/doc/index.html#trans--).
+Actually you can always use "trans" because if there is no translation it returns the text.  See: [locale](https://franbar1966.github.io/neutralts/docs/neutralts/#locale--) and [trans](https://franbar1966.github.io/neutralts/docs/neutralts/#trans--).
 
 Bif layout (Build-in function)
 ------------------------------
@@ -151,7 +151,7 @@ Bif layout (Build-in function)
 
 ```
 
-Bif example: (See: [syntax](https://docs.rs/neutralts/latest/neutralts/doc/index.html#syntax))
+Bif example: (See: [syntax](https://franbar1966.github.io/neutralts/docs/neutralts/#syntax))
 
 ```neutral
 {:filled; varname >>
@@ -261,7 +261,7 @@ From then on you can invoke it like this:
 {:snippet; name :}
 ```
 
-See: [snippet](https://docs.rs/neutralts/latest/neutralts/doc/index.html#snippet--).
+See: [snippet](https://franbar1966.github.io/neutralts/docs/neutralts/#snippet--).
 
 Cache
 -----
@@ -323,7 +323,7 @@ Neutral TS template engine provides a basic JavaScript to perform simple `fetch`
     </body>
 </html>
 ```
-See: [fetch](https://docs.rs/neutralts/latest/neutralts/doc/index.html#fetch--).
+See: [fetch](https://franbar1966.github.io/neutralts/docs/neutralts/#fetch--).
 
 Web template - example
 ----------------------
@@ -523,7 +523,7 @@ Links
 Neutral TS template engine.
 
 - [Rust docs](https://docs.rs/neutralts/latest/neutralts/)
-- [Template docs](https://docs.rs/neutralts/latest/neutralts/doc/index.html)
+- [Template docs](https://franbar1966.github.io/neutralts/docs/neutralts/)
 - [IPC server and clients](https://gitlab.com/neutralfw/ipc)
 - [Repository](https://gitlab.com/neutralfw/neutralts)
 - [Crate](https://crates.io/crates/neutralts)
