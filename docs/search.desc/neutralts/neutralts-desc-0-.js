@@ -1,1 +1,1 @@
-searchState.loadedDescShard("neutralts", 0, "Rust Template Engine - Neutral TS")
+searchState.loadedDescShard("neutralts", 0, "neutral")
