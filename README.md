@@ -3,18 +3,19 @@
 Rust Web Template Engine - Neutral TS
 =====================================
 
-Neutral is a **template engine** for the Web, designed to work with **any programming language** (language-agnostic) via IPC and natively as library/crate in Rust.
+Neutral is a **template engine** for the Web, designed to work with **any programming language** (language-agnostic) via IPC/Package and natively as library/crate in Rust.
 
 In this simple PWA example, all three use exactly the same templates.
 
 - [Rust PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/rust)
-- [Python PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
+- [Python PWA example IPC](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
+- [Python PWA example Package](https://github.com/FranBar1966/neutraltemplate/tree/master/examples)
 - [PHP PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php)
 - [Template](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/neutral)
 
-(*) For non-Rust requires an IPC server that you can download from the [IPC repository](https://gitlab.com/neutralfw/ipc)
+(*) For non-Rust requires an IPC server that you can download from the [IPC repository](https://gitlab.com/neutralfw/ipc) - [IPC server](https://gitlab.com/neutralfw/ipc/-/releases). Alternatively in Python you can use [PYPI Package](https://pypi.org/project/neutraltemplate/)
 
-The documentation of the **web template** engine is here: [template engine doc](https://franbar1966.github.io/neutralts/docs/neutralts/) and **Rust** documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
+The documentation of the **web template** engine is here: [template engine doc](https://docs.rs/neutralts/latest/neutralts/doc/) and **Rust** documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
 
 Rust
 ----
@@ -43,7 +44,7 @@ let content = template.render();
 Safe
 ----
 
-Neutral TS template engine is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://franbar1966.github.io/neutralts/docs/neutralts/#safety).
+Neutral TS template engine is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://docs.rs/neutralts/latest/neutralts/doc/#safety).
 
 Template Engine - Features
 --------------------------
@@ -55,7 +56,7 @@ It allows you to create templates compatible with any system and any programming
 * Modular
 * Parameterizable
 * Efficient
-* Template inheritance
+* Inheritance
 * Cache modular and !cache
 * JS fetch
 * Parse files
@@ -124,7 +125,7 @@ Now you can use:
 {:trans; Hello :}
 ```
 
-Actually you can always use "trans" because if there is no translation it returns the text.  See: [locale](https://franbar1966.github.io/neutralts/docs/neutralts/#locale--) and [trans](https://franbar1966.github.io/neutralts/docs/neutralts/#trans--).
+Actually you can always use "trans" because if there is no translation it returns the text.  See: [locale](https://docs.rs/neutralts/latest/neutralts/doc/#locale--) and [trans](https://docs.rs/neutralts/latest/neutralts/doc/#trans--).
 
 Bif layout (Build-in function)
 ------------------------------
@@ -151,7 +152,7 @@ Bif layout (Build-in function)
 
 ```
 
-Bif example: (See: [syntax](https://franbar1966.github.io/neutralts/docs/neutralts/#syntax))
+Bif example: (See: [syntax](https://docs.rs/neutralts/latest/neutralts/doc/#syntax))
 
 ```neutral
 {:filled; varname >>
@@ -261,7 +262,7 @@ From then on you can invoke it like this:
 {:snippet; name :}
 ```
 
-See: [snippet](https://franbar1966.github.io/neutralts/docs/neutralts/#snippet--).
+See: [snippet](https://docs.rs/neutralts/latest/neutralts/doc/#snippet--).
 
 Cache
 -----
@@ -323,7 +324,7 @@ Neutral TS template engine provides a basic JavaScript to perform simple `fetch`
     </body>
 </html>
 ```
-See: [fetch](https://franbar1966.github.io/neutralts/docs/neutralts/#fetch--).
+See: [fetch](https://docs.rs/neutralts/latest/neutralts/doc/#fetch--).
 
 Web template - example
 ----------------------
@@ -433,6 +434,9 @@ Native use (Rust)
 -----------------
 
 ```text
+use neutralts::Template;
+use serde_json::json;
+
 let template = Template::from_file_value("file.ntpl", schema).unwrap();
 let content = template.render();
 
@@ -457,8 +461,33 @@ let status_param = template.get_status_param();
  - [rocket](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/rocket)
  - [examples](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples)
 
-Python
-------
+Python - Package
+----------------
+
+```text
+pip install neutraltemplate
+```
+
+```text
+from neutraltemplate import NeutralTemplate
+
+template = NeutralTemplate("file.ntpl", schema)
+contents = template.render()
+
+# e.g.: 200
+status_code = template.get_status_code()
+
+# e.g.: OK
+status_text = template.get_status_text()
+
+# empty if no error
+status_param = template.get_status_param()
+
+# act accordingly at this point according to your framework
+```
+
+Python - IPC
+------------
 
 Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/ipc), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/python)
 
@@ -482,8 +511,10 @@ status_param = template.get_status_param()
 
 ### Python examples
 
-- [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
-- [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
+- [PWA example IPC](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
+- [PWA example Package](https://github.com/FranBar1966/neutraltemplate/tree/master/examples)
+- [Simple example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
+- [PYPI Package](https://pypi.org/project/neutraltemplate/)
 - [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/python)
 - [IPC server](https://gitlab.com/neutralfw/ipc)
 
@@ -523,9 +554,11 @@ Links
 Neutral TS template engine.
 
 - [Rust docs](https://docs.rs/neutralts/latest/neutralts/)
-- [Template docs](https://franbar1966.github.io/neutralts/docs/neutralts/)
+- [Template docs](https://docs.rs/neutralts/latest/neutralts/doc/)
+- [IPC server](https://gitlab.com/neutralfw/ipc/-/releases)
 - [IPC server and clients](https://gitlab.com/neutralfw/ipc)
 - [Repository](https://gitlab.com/neutralfw/neutralts)
 - [Crate](https://crates.io/crates/neutralts)
+- [PYPI Package](https://pypi.org/project/neutraltemplate/)
 - [Example Web App](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app)
 - [Examples](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples)
