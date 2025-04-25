@@ -3,22 +3,51 @@
 Neutral Web Template System
 ===========================
 
-Neutral is a **web application template system**, designed to work with **any programming language** (language-agnostic) via IPC and natively as library/crate in Rust.
+Neutral is a **template engine** for the Web, an alternative to *handlebars*, designed to work with **any programming language** (language-agnostic) via IPC/Package and natively as library/crate in Rust.
 
-In the examples, we use exactly the same template for both Rust and PHP:
+In this simple PWA example, all three use exactly the same templates.
 
-- [Rust example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/actix)
-- [PHP example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
-- [Template](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/www)
+- [Rust PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/rust)
+- [Python PWA example IPC](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
+- [Python PWA example Package](https://github.com/FranBar1966/neutraltemplate/tree/master/examples)
+- [PHP PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php)
+- [Template](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/neutral)
 
+(*) For non-Rust requires an IPC server that you can download from the [IPC repository](https://gitlab.com/neutralfw/ipc) - [IPC server](https://gitlab.com/neutralfw/ipc/-/releases). Alternatively in Python you can use [PYPI Package](https://pypi.org/project/neutraltemplate/)
+
+The documentation of the **web template** engine is here: [template engine doc](https://franbar1966.github.io/neutralts/docs/neutralts/) and **Rust** documentation here: [rust doc](https://docs.rs/neutralts/latest/neutralts/).
+
+Rust
+----
+
+In Rust it is enough with two methods, create the template with a file and a schema and then render:
+
+```text
+// Data
+let schema = json!({
+    "data": {
+        "hello": "Hello, World!",
+        "site": {
+            "name": "My Site"
+        }
+    }
+});
+
+// Create template
+// In file.ntpl use {:;hello:} and {:;site->name:} for show data.
+let template = Template::from_file_value("file.ntpl", schema).unwrap();
+
+// Render template
+let content = template.render();
+```
 
 Safe
 ----
 
-Neutral is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates.
+Neutral TS template engine is developed in Rust, one of the most secure programming languages. It does not have access to the application's data; it cannot do so because it is designed this way. It implements security mechanisms like "allow," which prevent arbitrary files from being loaded into templates. See: [safety](https://docs.rs/neutralts/latest/neutralts/doc/#safety).
 
-Features
---------
+Template Engine - Features
+--------------------------
 
 It allows you to create templates compatible with any system and any programming language.
 
@@ -27,6 +56,9 @@ It allows you to create templates compatible with any system and any programming
 * Modular
 * Parameterizable
 * Efficient
+* Inheritance
+* Cache modular and !cache
+* JS fetch
 * Parse files
 * Embed files
 * Localization
@@ -40,11 +72,11 @@ It allows you to create templates compatible with any system and any programming
 How it works
 ------------
 
-Neutral TS offers two main ways to integrate with other programming languages:
+Neutral TS template engine offers two main ways to integrate with other programming languages:
 
-* In Rust: You can use Neutral TS as a library by downloading the crate.
+* In Rust: You can use Neutral TS template engine as a library by downloading the crate.
 
-* In other programming languages: Inter-Process Communication (IPC) is necessary, similar to how databases like MariaDB work.
+* In other programming languages: Inter-Process Communication ([IPC](https://gitlab.com/neutralfw/ipc)) is necessary, similar to how databases like MariaDB work.
 
 Imagine a database. It has a server, and different programming languages access the data through a client. This means that if you run a "SELECT ..." query from any programming language, the result will always be the same.
 
@@ -57,7 +89,7 @@ A small example of a plugin: [countries form field](https://gitlab.com/neutralfw
 Localization
 ------------
 
-Neutral provides powerful and easy-to-use translation utilities... define the translation in a JSON:
+Neutral TS template engine provides powerful and easy-to-use translation utilities... define the translation in a JSON:
 
 ```json
 "locale": {
@@ -93,7 +125,7 @@ Now you can use:
 {:trans; Hello :}
 ```
 
-Actually you can always use "trans" because if there is no translation it returns the text.
+Actually you can always use "trans" because if there is no translation it returns the text.  See: [locale](https://docs.rs/neutralts/latest/neutralts/doc/#locale--) and [trans](https://docs.rs/neutralts/latest/neutralts/doc/#trans--).
 
 Bif layout (Build-in function)
 ------------------------------
@@ -103,16 +135,16 @@ Bif layout (Build-in function)
     .-- open bif
     |    .-- bif name
     |    |   .-- name separator
-    |    |   |    .-- params
-    |    |   |    |    .-- params/code separatos
-    |    |   |    |    |    .-- code
-    |    |   |    |    |    |   .-- close bif
-    |    |   |    |    |    |   |
-    v    v   v    v    v    v   v
-    -- ----- - ------- -- ----- --
-    {:snippet; varname >>  ...  :}
+    |    |   |     .-- params
+    |    |   |     |    .-- params/code separatos
+    |    |   |     |    |    .-- code
+    |    |   |     |    |    |   .-- close bif
+    |    |   |     |    |    |   |
+    v    v   v     v    v    v   v
+    -- ----- - -------- -- ----- --
+    {:snippet; snipname >>  ...  :}
     ------------------------------
-            ^  ----------------
+            ^ -------------------
             |         ^
             |         |
             |         `-- source
@@ -120,7 +152,7 @@ Bif layout (Build-in function)
 
 ```
 
-Bif example:
+Bif example: (See: [syntax](https://docs.rs/neutralts/latest/neutralts/doc/#syntax))
 
 ```neutral
 {:filled; varname >>
@@ -128,7 +160,7 @@ Bif example:
 :}
 ```
 
-Neutral is based on Bifs with block structure, we call the set of nested Bifs of the same level a block:
+Neutral TS template engine is based on Bifs with block structure, we call the set of nested Bifs of the same level a block:
 
 ```neutral
 
@@ -230,8 +262,72 @@ From then on you can invoke it like this:
 {:snippet; name :}
 ```
 
-Template example
-----------------
+See: [snippet](https://docs.rs/neutralts/latest/neutralts/doc/#snippet--).
+
+Cache
+-----
+
+The cache is modular, allowing only parts of the template to be included in the cache:
+
+```plaintext
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Template engine cache</title>
+    </head>
+    <body>
+        {:cache; /120/ >>
+            <div>{:code; ... :}</div>
+        :}
+        <div>{:date; %H:%M:%S :}</div>
+        {:cache; /120/ >>
+            <div>{:code; ... :}</div>
+        :}
+    </body>
+</html>
+```
+Or exclude parts of the cache, the previous example would be much better like this:
+
+```plaintext
+{:cache; /120/ >>
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Template engine cache</title>
+        </head>
+        <body>
+            <div>{:code; ... :}</div>
+            {:!cache;
+                {:date; %H:%M:%S :}
+            :}
+            <div>{:code; ... :}</div>
+        </body>
+    </html>
+:}
+```
+
+Fetch
+-----
+
+Neutral TS template engine provides a basic JavaScript to perform simple `fetch` requests:
+
+```plaintext
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Template engine</title>
+    </head>
+    <body>
+        {:fetch; "/form-login" >>
+            <div>Loading...</div>
+        :}
+    </body>
+</html>
+```
+See: [fetch](https://docs.rs/neutralts/latest/neutralts/doc/#fetch--).
+
+Web template - example
+----------------------
 
 ```html
 {:*
@@ -257,16 +353,23 @@ Template example
 </html>
 ```
 
-Native use (Rust)
------------------
+Usage
+-----
 
 You need two things, a template file and a json schema:
 
-```text
-
-let schema = json!({
+```plaintext
+{
     "config": {
-        "comments": "remove"
+        "comments": "remove",
+        "cache_prefix": "neutral-cache",
+        "cache_dir": "",
+        "cache_on_post": false,
+        "cache_on_get": true,
+        "cache_on_cookies": true,
+        "cache_disable": false,
+        "filter_all": false,
+        "disable_js": false
     },
     "inherit": {
         "locale": {
@@ -296,40 +399,44 @@ let schema = json!({
         }
     },
     "data": {
-        "web-site-name": "MySite",
-        "varname": "value",
-        "true": true,
-        "false": false,
-        "hello": "hello",
-        "zero": "0",
-        "one": "1",
-        "spaces": "  ",
-        "empty": "",
-        "null": null,
-        "emptyarr": [],
-        "array": {
-            "true": true,
-            "false": false,
-            "hello": "hello",
-            "zero": "0",
-            "one": "1",
-            "spaces": "  ",
-            "empty": "",
-            "null": null
+        "CONTEXT": {
+            "ROUTE": "",
+            "HOST": "",
+            "GET": {},
+            "POST": {},
+            "HEADERS": {},
+            "FILES": {},
+            "COOKIES": {},
+            "SESSION": {},
+            "ENV": {}
+        },
+        "site_name": "MySite",
+        "site": {
+            "name": "MySite",
         }
     }
-});
+}
 ```
 
 Template file.ntpl:
 
-```html
-{:;web-site-name:}
+```text
+{:;site_name:}
 ```
 
-In Rust:
+Or for array:
 
 ```text
+{:;site->name:}
+```
+
+Native use (Rust)
+-----------------
+
+```text
+use neutralts::Template;
+use serde_json::json;
+
 let template = Template::from_file_value("file.ntpl", schema).unwrap();
 let content = template.render();
 
@@ -345,21 +452,113 @@ let status_param = template.get_status_param();
 // act accordingly at this point according to your framework
 ```
 
-Rust examples
--------------
+### Rust examples
 
+ - [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/rust)
  - [actix-web](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/actix)
  - [warp](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/warp)
  - [axum](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/actix)
  - [rocket](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/rocket)
  - [examples](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples)
 
+Python - Package
+----------------
+
+```text
+pip install neutraltemplate
+```
+
+```text
+from neutraltemplate import NeutralTemplate
+
+template = NeutralTemplate("file.ntpl", schema)
+contents = template.render()
+
+# e.g.: 200
+status_code = template.get_status_code()
+
+# e.g.: OK
+status_text = template.get_status_text()
+
+# empty if no error
+status_param = template.get_status_param()
+
+# act accordingly at this point according to your framework
+```
+
+Python - IPC
+------------
+
+Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/ipc), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/python)
+
+```text
+from NeutralIpcTemplate import NeutralIpcTemplate
+
+template = NeutralIpcTemplate("file.ntpl", schema)
+contents = template.render()
+
+# e.g.: 200
+status_code = template.get_status_code()
+
+# e.g.: OK
+status_text = template.get_status_text()
+
+# empty if no error
+status_param = template.get_status_param()
+
+# act accordingly at this point according to your framework
+```
+
+### Python examples
+
+- [PWA example IPC](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/python)
+- [PWA example Package](https://github.com/FranBar1966/neutraltemplate/tree/master/examples)
+- [Simple example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
+- [PYPI Package](https://pypi.org/project/neutraltemplate/)
+- [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/python)
+- [IPC server](https://gitlab.com/neutralfw/ipc)
+
 PHP
 ---
-- [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
-- [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/php)
 
-Python
-------
-- [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/python)
-- [IPC client](https://gitlab.com/neutralfw/neutralts/-/tree/master/ipc/python)
+Requires an IPC server that you can download from the [repository](https://gitlab.com/neutralfw/ipc), and an IPC client that you can download here: [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/php)
+
+```text
+include 'NeutralIpcTemplate.php';
+
+$template = new NeutralIpcTemplate("file.ntpl", $schema);
+$contents = $template->render();
+
+// e.g.: 200
+$status_code = $template->get_status_code();
+
+// e.g.: OK
+$status_text = $template->get_status_text();
+
+// empty if no error
+$status_param = $template->get_status_param();
+
+// act accordingly at this point according to your framework
+```
+
+### PHP examples
+
+- [PWA example](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app/php)
+- [example](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples/php)
+- [IPC client](https://gitlab.com/neutralfw/ipc/-/tree/master/php)
+- [IPC server](https://gitlab.com/neutralfw/ipc)
+
+Links
+-----
+
+Neutral TS template engine.
+
+- [Rust docs](https://docs.rs/neutralts/latest/neutralts/)
+- [Template docs](https://docs.rs/neutralts/latest/neutralts/doc/)
+- [IPC server](https://gitlab.com/neutralfw/ipc/-/releases)
+- [IPC server and clients](https://gitlab.com/neutralfw/ipc)
+- [Repository](https://gitlab.com/neutralfw/neutralts)
+- [Crate](https://crates.io/crates/neutralts)
+- [PYPI Package](https://pypi.org/project/neutraltemplate/)
+- [Example Web App](https://gitlab.com/neutralfw/neutralts/-/tree/master/web-app)
+- [Examples](https://gitlab.com/neutralfw/neutralts/-/tree/master/examples)
